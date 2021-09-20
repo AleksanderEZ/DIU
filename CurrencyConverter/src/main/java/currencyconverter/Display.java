@@ -16,7 +16,7 @@ public class Display extends javax.swing.JFrame {
     
     public Display() {
         setTitle("Conversor");
-        decimalFormat.setRoundingMode(RoundingMode.DOWN);
+        decimalFormat.setRoundingMode(RoundingMode.FLOOR);
         initComponents();
         addDocumentListeners();
         setLookAndFeel();
@@ -150,7 +150,7 @@ public class Display extends javax.swing.JFrame {
         String text = from.getText();
         text = text.replace(',', '.');
         try {
-            double value = Float.parseFloat(text);
+            double value = Double.parseDouble(text);
             // Value should be passed through a conversion class/function
             to.setText(decimalFormat.format(value));
             errorMessage.setVisible(false);
