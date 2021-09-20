@@ -1,9 +1,20 @@
 package currencyconverter;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 public class Display extends javax.swing.JFrame {
 
+    DocumentListener euroInputListener, dollarInputListener;
+    DecimalFormat decimalFormat = new DecimalFormat("#.##");
+    
     public Display() {
+        decimalFormat.setRoundingMode(RoundingMode.DOWN);
         initComponents();
+        addDocumentListeners();
     }
     
     public void run() {
@@ -18,11 +29,11 @@ public class Display extends javax.swing.JFrame {
         dollarInput = new javax.swing.JTextField();
         euroLabel = new javax.swing.JLabel();
         dollarLabel = new javax.swing.JLabel();
+        errorMessage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(240, 180));
         setMinimumSize(new java.awt.Dimension(240, 180));
-        setPreferredSize(new java.awt.Dimension(240, 180));
         setResizable(false);
 
         euroInput.addActionListener(new java.awt.event.ActionListener() {
@@ -43,22 +54,28 @@ public class Display extends javax.swing.JFrame {
         dollarLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         dollarLabel.setText("$");
 
+        errorMessage.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        errorMessage.setForeground(new java.awt.Color(255, 0, 0));
+        errorMessage.setText("Solo se puede escribir números");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(euroInput, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(euroLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(dollarInput, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(dollarLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(errorMessage)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(euroInput, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(euroLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(dollarInput, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(dollarLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -71,24 +88,79 @@ public class Display extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(dollarInput, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
                     .addComponent(dollarLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(errorMessage)
+                .addContainerGap(29, Short.MAX_VALUE))
         );
+
+        errorMessage.setVisible(false);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void euroInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_euroInputActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_euroInputActionPerformed
 
     private void dollarInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dollarInputActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_dollarInputActionPerformed
 
+    private void addDocumentListeners() {
+        euroInputListener = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                processInput(euroInput, dollarInput, dollarInputListener);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                processInput(euroInput, dollarInput, dollarInputListener);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        };
+        euroInput.getDocument().addDocumentListener(euroInputListener);
+        dollarInputListener = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                processInput(dollarInput, euroInput, euroInputListener);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                processInput(dollarInput, euroInput, euroInputListener);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        };
+        dollarInput.getDocument().addDocumentListener(dollarInputListener);
+    }
+    
+    private void processInput(JTextField from, JTextField to, DocumentListener listener) {
+        // Remove listener so that it won't react to our following change
+        to.getDocument().removeDocumentListener(listener);
+        String text = from.getText();
+        text = text.replace(',', '.');
+        try {
+            double value = Float.parseFloat(text);
+            // Value should be passed through a conversion class/function
+            to.setText(decimalFormat.format(value));
+            errorMessage.setVisible(false);
+        } catch (NumberFormatException exception) {
+            if (!text.equals("")) {
+                errorMessage.setVisible(true);    
+            }
+        }
+        to.getDocument().addDocumentListener(listener);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField dollarInput;
     private javax.swing.JLabel dollarLabel;
+    private javax.swing.JLabel errorMessage;
     private javax.swing.JTextField euroInput;
     private javax.swing.JLabel euroLabel;
     // End of variables declaration//GEN-END:variables
