@@ -1,8 +1,11 @@
 package currencyconverter;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -12,9 +15,11 @@ public class Display extends javax.swing.JFrame {
     DecimalFormat decimalFormat = new DecimalFormat("#.##");
     
     public Display() {
+        setTitle("Conversor");
         decimalFormat.setRoundingMode(RoundingMode.DOWN);
         initComponents();
         addDocumentListeners();
+        setLookAndFeel();
     }
     
     public void run() {
@@ -164,4 +169,14 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JTextField euroInput;
     private javax.swing.JLabel euroLabel;
     // End of variables declaration//GEN-END:variables
+
+    private void setLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+            SwingUtilities.updateComponentTreeUI(getContentPane());
+        }
+        catch (Exception e) {
+            System.out.println("Adding Look and Feel failed");
+        }
+    }
 }
