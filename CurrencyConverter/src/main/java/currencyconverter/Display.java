@@ -1,5 +1,7 @@
 package currencyconverter;
 
+import currencyconverter.model.*;
+
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -144,22 +146,26 @@ public class Display extends javax.swing.JFrame {
         dollarInput.getDocument().addDocumentListener(dollarInputListener);
     }
     
-    private void processInput(JTextField from, JTextField to, DocumentListener listener) {
+    private void processInput(JTextField origin, JTextField destination, DocumentListener listener) {
         // Remove listener so that it won't react to our following change
-        to.getDocument().removeDocumentListener(listener);
-        String text = from.getText();
+        destination.getDocument().removeDocumentListener(listener);
+        String text = origin.getText();
         text = text.replace(',', '.');
         try {
             double value = Double.parseDouble(text);
-            // Value should be passed through a conversion class/function
-            to.setText(decimalFormat.format(value));
+            if(origin.getName() == "euroInput"){
+                value = new DolarEuro().getConversionRate();
+            } else {
+                value = new EuroDolar().getConversionRate();
+            }
+            destination.setText(decimalFormat.format(value));
             errorMessage.setVisible(false);
         } catch (NumberFormatException exception) {
             if (!text.equals("")) {
                 errorMessage.setVisible(true);    
             }
         }
-        to.getDocument().addDocumentListener(listener);
+        destination.getDocument().addDocumentListener(listener);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
