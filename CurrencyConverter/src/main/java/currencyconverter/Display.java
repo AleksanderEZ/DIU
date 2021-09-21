@@ -185,6 +185,7 @@ public class Display extends javax.swing.JFrame {
             Float amountInEuros = dollarToEuroConversionRate * amount;
             amountText = amountInEuros.toString();
         }
+        amountText = amountText.substring(0, amountText.indexOf('.') + 3);
         setTextTo(!isEuroInput, amountText);
     }
 
