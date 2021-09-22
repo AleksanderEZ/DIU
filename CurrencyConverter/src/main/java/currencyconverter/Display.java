@@ -1,19 +1,20 @@
 package currencyconverter;
 
 import currencyconverter.model.*;
-
 import com.formdev.flatlaf.FlatDarkLaf;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 public class Display extends javax.swing.JFrame {
+
+    private final int MAX_DECIMAL_DIGITS = 2;
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -27,18 +28,6 @@ public class Display extends javax.swing.JFrame {
         setMaximumSize(new java.awt.Dimension(240, 180));
         setMinimumSize(new java.awt.Dimension(240, 180));
         setResizable(false);
-
-        euroInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                euroInputActionPerformed(evt);
-            }
-        });
-
-        dollarInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dollarInputActionPerformed(evt);
-            }
-        });
 
         euroLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         euroLabel.setText("€");
@@ -90,12 +79,6 @@ public class Display extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void euroInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_euroInputActionPerformed
-    }//GEN-LAST:event_euroInputActionPerformed
-
-    private void dollarInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dollarInputActionPerformed
-    }//GEN-LAST:event_dollarInputActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField dollarInput;
     private javax.swing.JLabel dollarLabel;
@@ -104,7 +87,6 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JLabel euroLabel;
     // End of variables declaration//GEN-END:variables
     DocumentListener euroInputListener, dollarInputListener;
-    private final int CHAR_LIMIT = 100;
 
     public Display() {
         setTitle("Conversor");
@@ -117,76 +99,136 @@ public class Display extends javax.swing.JFrame {
         setVisible(true);
     }
 
+    private void setLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        SwingUtilities.updateComponentTreeUI(getContentPane());
+    }
+
     private void addDocumentListeners() {
-        euroInput.getDocument().addDocumentListener(new DocumentListener() {
+        euroInputListener = getEuroListener();
+        dollarInputListener = getDollarListener();
+        addEuroListener();
+        addDollarListener();
+    }
+
+    private DocumentListener getEuroListener() {
+        return new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
+                removeDollarListener();
                 displayConvertedValueInTheOtherTextbox(e, true);
+                addDollarListener();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
+                removeDollarListener();
                 displayConvertedValueInTheOtherTextbox(e, true);
+                addDollarListener();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
             }
-        });
+        };
+    }
 
-        dollarInput.getDocument().addDocumentListener(new DocumentListener() {
+    private DocumentListener getDollarListener() {
+        return new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
+                removeEuroListener();
                 displayConvertedValueInTheOtherTextbox(e, false);
+                addEuroListener();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
+                removeEuroListener();
                 displayConvertedValueInTheOtherTextbox(e, false);
+                addEuroListener();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
             }
-        });
+        };
+    }
+
+    private void removeEuroListener() {
+        euroInput.getDocument().removeDocumentListener(euroInputListener);
+    }
+    
+    private void removeDollarListener() {
+        dollarInput.getDocument().removeDocumentListener(dollarInputListener);
+    }
+    
+    private void addEuroListener() {
+        euroInput.getDocument().addDocumentListener(euroInputListener);
+    }
+
+    private void addDollarListener() {
+        dollarInput.getDocument().addDocumentListener(dollarInputListener);
     }
 
     private void displayConvertedValueInTheOtherTextbox(DocumentEvent e, boolean isEuroInput) {
-        String text = "";
+
+        String text = getTextFromInput(e);
+        
+        if (text.isEmpty() == false) {
+            text = Converter.decimalDotSeparation(text);
+            Float extractedNumber = getNumberFromText(text);
+
+            if (extractedNumber != null) {
+                errorMessage.setVisible(false);
+                display(extractedNumber, isEuroInput);
+            } else {
+                errorMessage.setVisible(true);
+                setInputBlank(!isEuroInput);
+            }
+        } else {
+            setInputBlank(!isEuroInput);
+        }
+    }
+
+    private String getTextFromInput(DocumentEvent e) {
+        String text;
         try {
             int length = e.getDocument().getLength();
             text = e.getDocument().getText(0, length);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+        } catch (BadLocationException ex) {
+            Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+            text = null;
         }
-        
-        text = text.replace(',', '.');
-        
-        try {
-            float value = Float.parseFloat(text);
-            errorMessage.setVisible(false);
-            convertAndDisplay(value, isEuroInput);
-        } catch (NumberFormatException ex) {
-            text.replaceAll("[^\\d.]", "");
-            setTextTo(isEuroInput, text);
-            errorMessage.setVisible(true);
-        }
-
+        return text;
     }
 
-    private void convertAndDisplay(float amount, boolean isEuroInput) {
-        String amountText;
-        if (isEuroInput) {
-            float euroToDolarConversionRate = new EuroDolar().getConversionRate();
-            Float amountInDollars = euroToDolarConversionRate * amount;
-            amountText = amountInDollars.toString();
-        } else {
-            float dollarToEuroConversionRate = new DolarEuro().getConversionRate();
-            Float amountInEuros = dollarToEuroConversionRate * amount;
-            amountText = amountInEuros.toString();
+    private Float getNumberFromText(String text) {
+        Float value;
+        try {
+            value = Float.parseFloat(text);
+        } catch (NumberFormatException ex) {
+            Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+            value = null;
         }
-        amountText = amountText.substring(0, amountText.indexOf('.') + 3);
-        setTextTo(!isEuroInput, amountText);
+        return value;
+    }
+
+    private void display(Float amount, boolean isEuroInput) {
+        
+        if (isEuroInput) {
+            amount = Converter.convertEurosToDollars(amount);
+        } else {
+            amount = Converter.convertDollarsToEuros(amount);
+        }
+        
+        String amountText = amount.toString();
+        amountText = amountText.substring(0, amountText.indexOf('.') + MAX_DECIMAL_DIGITS + 1);
+        setInputTextTo(!isEuroInput, amountText);
     }
 
     private void setInputBlank(boolean isEuroInput) {
@@ -196,21 +238,12 @@ public class Display extends javax.swing.JFrame {
             dollarInput.setText("");
         }
     }
-    
-    private void setTextTo(boolean isEuroInput, String text) {
+
+    private void setInputTextTo(boolean isEuroInput, String text) {
         if (isEuroInput) {
             euroInput.setText(text);
         } else {
             dollarInput.setText(text);
-        }
-    }
-
-    private void setLookAndFeel() {
-        try {
-            UIManager.setLookAndFeel(new FlatDarkLaf());
-            SwingUtilities.updateComponentTreeUI(getContentPane());
-        } catch (Exception e) {
-            System.out.println("Adding Look and Feel failed");
         }
     }
 }
