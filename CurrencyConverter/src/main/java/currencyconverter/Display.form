@@ -73,14 +73,8 @@
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JTextField" name="euroInput">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="euroInputActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="dollarInput">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dollarInputActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="euroLabel">
       <Properties>
