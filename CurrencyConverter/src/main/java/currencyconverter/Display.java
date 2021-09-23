@@ -179,7 +179,7 @@ public class Display extends javax.swing.JFrame {
 
         String text = getTextFromInput(e);
         
-        if (text.isEmpty() == false) {
+        if (!text.isEmpty()) {
             text = Converter.decimalDotSeparation(text);
             Float extractedNumber = getNumberFromText(text);
 
@@ -188,10 +188,7 @@ public class Display extends javax.swing.JFrame {
                 display(extractedNumber, isEuroInput);
             } else {
                 errorMessage.setVisible(true);
-                setInputBlank(!isEuroInput);
             }
-        } else {
-            setInputBlank(!isEuroInput);
         }
     }
 
@@ -225,18 +222,8 @@ public class Display extends javax.swing.JFrame {
         } else {
             amount = Converter.convertDollarsToEuros(amount);
         }
-        
-        String amountText = amount.toString();
-        amountText = amountText.substring(0, amountText.indexOf('.') + MAX_DECIMAL_DIGITS + 1);
+        String amountText = String.format("%.2f", amount);
         setInputTextTo(!isEuroInput, amountText);
-    }
-
-    private void setInputBlank(boolean isEuroInput) {
-        if (isEuroInput) {
-            euroInput.setText("");
-        } else {
-            dollarInput.setText("");
-        }
     }
 
     private void setInputTextTo(boolean isEuroInput, String text) {
