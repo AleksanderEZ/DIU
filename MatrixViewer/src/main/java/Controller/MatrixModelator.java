@@ -1,5 +1,6 @@
 package Controller;
 
+import View.MatrixPanel;
 import Model.SquareMatrixGenerator;
 
 public class MatrixModelator {
@@ -23,7 +24,8 @@ public class MatrixModelator {
         this.maxMatrixValue = maxMatrixValue;
     }
     
-    public Float[][] generate(){
-        return null;
+    public MatrixPanel generate(){
+        Float[][] matrixToShow = matrixGenerator.generate(minMatrixValue, maxMatrixValue);
+        return new MatrixPanel(matrixToShow);
     } 
 }
