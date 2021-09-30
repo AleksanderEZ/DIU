@@ -5,6 +5,9 @@
  */
 package view;
 
+import java.util.Hashtable;
+import javax.swing.JLabel;
+import javax.swing.JSlider;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -27,8 +30,7 @@ public class Display extends javax.swing.JFrame {
                     int maxValue = Integer.parseInt(maxValueInput.getText());
                     if (maxValue > minimumShownValue.getMinimum()) {
                         minimumShownValue.setMaximum(maxValue);
-                        double range = (minimumShownValue.getMaximum() - minimumShownValue.getMinimum());
-                        minimumShownValue.setMajorTickSpacing((int) (range/10));
+                        Display.this.setLabels(minimumShownValue, 10);
                         errorMessage.setVisible(false);
                     }
                 } catch (NumberFormatException exception) {
@@ -42,8 +44,7 @@ public class Display extends javax.swing.JFrame {
                     int maxValue = Integer.parseInt(maxValueInput.getText());
                     if (maxValue > minimumShownValue.getMinimum()) {
                         minimumShownValue.setMaximum(maxValue);
-                        double range = (minimumShownValue.getMaximum() - minimumShownValue.getMinimum());
-                        minimumShownValue.setMajorTickSpacing((int) (range/10));
+                        Display.this.setLabels(minimumShownValue, 10);
                         errorMessage.setVisible(false);
                     }
                 } catch (NumberFormatException exception) {
@@ -63,8 +64,7 @@ public class Display extends javax.swing.JFrame {
                     int minValue = Integer.parseInt(minValueInput.getText());
                     if (minValue < minimumShownValue.getMaximum()) {
                         minimumShownValue.setMinimum(minValue);
-                        double range = (minimumShownValue.getMaximum() - minimumShownValue.getMinimum());
-                        minimumShownValue.setMajorTickSpacing((int) (range/10));
+                        Display.this.setLabels(minimumShownValue, 10);
                         errorMessage.setVisible(false);
                     }
                 } catch (NumberFormatException exception) {
@@ -78,8 +78,7 @@ public class Display extends javax.swing.JFrame {
                     int minValue = Integer.parseInt(minValueInput.getText());
                     if (minValue < minimumShownValue.getMaximum()) {
                         minimumShownValue.setMinimum(minValue);
-                        double range = (minimumShownValue.getMaximum() - minimumShownValue.getMinimum());
-                        minimumShownValue.setMajorTickSpacing((int) (range/10));
+                        Display.this.setLabels(minimumShownValue, 10);
                         errorMessage.setVisible(false);
                     }
                 } catch (NumberFormatException exception) {
@@ -92,6 +91,22 @@ public class Display extends javax.swing.JFrame {
             }
             
         });
+    }
+    
+    private void setLabels(JSlider slider, int step) {
+        double max = slider.getMaximum();
+        double min = slider.getMinimum();
+        double range = (max - min)/step;
+        slider.setMajorTickSpacing((int) range);
+        Hashtable<Integer, JLabel> table = new Hashtable<>();
+        Integer prev = null;
+        for (double i = min, j = 0; i <= max + 1; i += range, j++) {
+            Integer current = (int) i;
+            if (!current.equals(prev)) {
+                table.put(current, new JLabel(current.toString()));
+            }
+        }
+        slider.setLabelTable(table);
     }
     
     @SuppressWarnings("unchecked")
