@@ -5,6 +5,7 @@
  */
 package view;
 
+import Controller.MatrixModelator;
 import java.util.Hashtable;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
@@ -13,9 +14,17 @@ import javax.swing.event.DocumentListener;
 
 public class Display extends javax.swing.JFrame {
 
+    MatrixPanel matrixPanel;
+    MatrixModelator modelator;
+    
     public Display() {
         initComponents();
         addDocumentListeners();
+        modelator = new MatrixModelator();
+        modelator.setMaxMatrixValue(minimumShownValue.getMaximum());
+        modelator.setMinMatrixValue(minimumShownValue.getMinimum());
+        modelator.generate();
+        setMatrixPanel();
     }
 
     public void run() {
@@ -100,7 +109,7 @@ public class Display extends javax.swing.JFrame {
         slider.setMajorTickSpacing((int) range);
         Hashtable<Integer, JLabel> table = new Hashtable<>();
         Integer prev = null;
-        for (double i = min, j = 0; i <= max + 1; i += range, j++) {
+        for (double i = min, j = 0; i <= max; i += range, j++) {
             Integer current = (int) i;
             if (!current.equals(prev)) {
                 table.put(current, new JLabel(current.toString()));
@@ -109,38 +118,42 @@ public class Display extends javax.swing.JFrame {
         slider.setLabelTable(table);
     }
     
+    private void setMatrixPanel() {
+        matrixPanel = modelator.getMatrixPanel(minimumShownValue.getValue());
+        
+        getContentPane().removeAll();
+        getContentPane().add(matrixPanel);
+        getContentPane().add(configPanel);
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
-        matrixPanel = new javax.swing.JPanel();
         configPanel = new javax.swing.JPanel();
+        sliderPanel = new javax.swing.JPanel();
         minimumShownValue = new javax.swing.JSlider();
         rangeInputPanel = new javax.swing.JPanel();
-        maxValueInput = new javax.swing.JTextField();
-        minValueInput = new javax.swing.JTextField();
+        maxValue = new javax.swing.JPanel();
         maxValueLabel = new javax.swing.JLabel();
+        maxValueInput = new javax.swing.JTextField();
+        minValue = new javax.swing.JPanel();
         minValueLabel = new javax.swing.JLabel();
+        minValueInput = new javax.swing.JTextField();
         errorMessage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("Matriz aleatoria"); // NOI18N
         setPreferredSize(new java.awt.Dimension(640, 480));
-        setResizable(false);
+        java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
+        layout.columnWidths = new int[] {4};
+        layout.rowHeights = new int[] {3};
+        getContentPane().setLayout(layout);
 
-        matrixPanel.setToolTipText("");
-        matrixPanel.setPreferredSize(new java.awt.Dimension(278, 278));
+        configPanel.setLayout(new javax.swing.BoxLayout(configPanel, javax.swing.BoxLayout.PAGE_AXIS));
 
-        javax.swing.GroupLayout matrixPanelLayout = new javax.swing.GroupLayout(matrixPanel);
-        matrixPanel.setLayout(matrixPanelLayout);
-        matrixPanelLayout.setHorizontalGroup(
-            matrixPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 278, Short.MAX_VALUE)
-        );
-        matrixPanelLayout.setVerticalGroup(
-            matrixPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 278, Short.MAX_VALUE)
-        );
+        sliderPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         minimumShownValue.setMajorTickSpacing(10);
         minimumShownValue.setOrientation(javax.swing.JSlider.VERTICAL);
@@ -152,93 +165,77 @@ public class Display extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout sliderPanelLayout = new javax.swing.GroupLayout(sliderPanel);
+        sliderPanel.setLayout(sliderPanelLayout);
+        sliderPanelLayout.setHorizontalGroup(
+            sliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 418, Short.MAX_VALUE)
+            .addGroup(sliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(sliderPanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(minimumShownValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        sliderPanelLayout.setVerticalGroup(
+            sliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 177, Short.MAX_VALUE)
+            .addGroup(sliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(sliderPanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(minimumShownValue, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
+        configPanel.add(sliderPanel);
+
+        rangeInputPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        rangeInputPanel.setLayout(new javax.swing.BoxLayout(rangeInputPanel, javax.swing.BoxLayout.PAGE_AXIS));
+
+        maxValue.setBorder(javax.swing.BorderFactory.createEmptyBorder(25, 15, 25, 15));
+        maxValue.setLayout(new javax.swing.BoxLayout(maxValue, javax.swing.BoxLayout.LINE_AXIS));
+
+        maxValueLabel.setText("Valor máximo");
+        maxValueLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        maxValue.add(maxValueLabel);
+
+        maxValueInput.setBorder(null);
         maxValueInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 maxValueInputActionPerformed(evt);
             }
         });
+        maxValue.add(maxValueInput);
 
-        maxValueLabel.setText("Valor máximo");
+        rangeInputPanel.add(maxValue);
+
+        minValue.setBorder(javax.swing.BorderFactory.createEmptyBorder(25, 15, 25, 15));
+        minValue.setLayout(new javax.swing.BoxLayout(minValue, javax.swing.BoxLayout.LINE_AXIS));
 
         minValueLabel.setText("Valor mínimo");
+        minValueLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        minValue.add(minValueLabel);
+
+        minValueInput.setBorder(null);
+        minValue.add(minValueInput);
+
+        rangeInputPanel.add(minValue);
 
         errorMessage.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         errorMessage.setText("Solo números sin coma");
-
-        javax.swing.GroupLayout rangeInputPanelLayout = new javax.swing.GroupLayout(rangeInputPanel);
-        rangeInputPanel.setLayout(rangeInputPanelLayout);
-        rangeInputPanelLayout.setHorizontalGroup(
-            rangeInputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(rangeInputPanelLayout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addGroup(rangeInputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(minValueLabel)
-                    .addComponent(maxValueLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(rangeInputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(maxValueInput)
-                    .addComponent(minValueInput)))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rangeInputPanelLayout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
-                .addComponent(errorMessage)
-                .addContainerGap())
-        );
-        rangeInputPanelLayout.setVerticalGroup(
-            rangeInputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(rangeInputPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(rangeInputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(maxValueInput, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(maxValueLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(rangeInputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(minValueInput, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(minValueLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addComponent(errorMessage)
-                .addContainerGap())
-        );
-
+        rangeInputPanel.add(errorMessage);
         errorMessage.setVisible(false);
 
-        javax.swing.GroupLayout configPanelLayout = new javax.swing.GroupLayout(configPanel);
-        configPanel.setLayout(configPanelLayout);
-        configPanelLayout.setHorizontalGroup(
-            configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(minimumShownValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(rangeInputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        configPanelLayout.setVerticalGroup(
-            configPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(configPanelLayout.createSequentialGroup()
-                .addComponent(minimumShownValue, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(rangeInputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        configPanel.add(rangeInputPanel);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(matrixPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(configPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(configPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(matrixPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.ipadx = 77;
+        gridBagConstraints.ipady = 40;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(11, 10, 11, 10);
+        getContentPane().add(configPanel, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -248,7 +245,7 @@ public class Display extends javax.swing.JFrame {
     }//GEN-LAST:event_maxValueInputActionPerformed
 
     private void minimumShownValueStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_minimumShownValueStateChanged
-        System.out.println(minimumShownValue.getValue());
+        setMatrixPanel();
     }//GEN-LAST:event_minimumShownValueStateChanged
 
     public static void main(String args[]) {
@@ -286,14 +283,15 @@ public class Display extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel configPanel;
     private javax.swing.JLabel errorMessage;
-    private javax.swing.JPanel matrixPanel;
+    private javax.swing.JPanel maxValue;
     private javax.swing.JTextField maxValueInput;
     private javax.swing.JLabel maxValueLabel;
+    private javax.swing.JPanel minValue;
     private javax.swing.JTextField minValueInput;
     private javax.swing.JLabel minValueLabel;
     private javax.swing.JSlider minimumShownValue;
     private javax.swing.JPanel rangeInputPanel;
+    private javax.swing.JPanel sliderPanel;
     // End of variables declaration//GEN-END:variables
 
-    
 }
