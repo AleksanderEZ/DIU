@@ -196,8 +196,9 @@ public class Display extends javax.swing.JFrame {
         errorMessage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(845, 340));
         setName("Matriz aleatoria"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(640, 480));
+        setPreferredSize(new java.awt.Dimension(845, 580));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         configPanel.setLayout(new java.awt.BorderLayout());
@@ -224,6 +225,7 @@ public class Display extends javax.swing.JFrame {
         maxValue.setBorder(javax.swing.BorderFactory.createEmptyBorder(25, 15, 25, 15));
         maxValue.setLayout(new javax.swing.BoxLayout(maxValue, javax.swing.BoxLayout.PAGE_AXIS));
 
+        maxValueLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         maxValueLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         maxValueLabel.setText("Valor máximo");
         maxValueLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
@@ -237,6 +239,7 @@ public class Display extends javax.swing.JFrame {
         minValue.setBorder(javax.swing.BorderFactory.createEmptyBorder(25, 15, 25, 15));
         minValue.setLayout(new javax.swing.BoxLayout(minValue, javax.swing.BoxLayout.PAGE_AXIS));
 
+        minValueLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         minValueLabel.setText("Valor mínimo");
         minValueLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
         minValue.add(minValueLabel);
