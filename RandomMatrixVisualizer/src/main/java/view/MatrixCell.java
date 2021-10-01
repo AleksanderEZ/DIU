@@ -1,5 +1,7 @@
 package view;
 
+import javax.swing.BorderFactory;
+
 public class MatrixCell extends javax.swing.JPanel {
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -21,5 +23,7 @@ public class MatrixCell extends javax.swing.JPanel {
         initComponents();
         cell.setText(matrixValue);
         cell.setEditable(false);
+        cell.setSize(50, 50);
+        cell.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
     }
 }

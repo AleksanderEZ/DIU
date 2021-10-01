@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import Controller.MatrixModelator;
+import com.formdev.flatlaf.FlatDarculaLaf;
 import java.util.Hashtable;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -18,6 +15,11 @@ public class Display extends javax.swing.JFrame {
     MatrixModelator modelator;
     
     public Display() {
+        try {
+            UIManager.setLookAndFeel( new FlatDarculaLaf() );
+        } catch( Exception ex ) {
+            System.err.println( "Failed to initialize LaF" );
+        }
         initComponents();
         addDocumentListeners();
         modelator = new MatrixModelator();
@@ -25,10 +27,20 @@ public class Display extends javax.swing.JFrame {
         modelator.setMinMatrixValue(minimumShownValue.getMinimum());
         modelator.generate();
         setMatrixPanel();
+        setTitle("Random Matrix Viewer");
+    }
+    
+    private void reloadMatrix() {
+        modelator.setMaxMatrixValue(minimumShownValue.getMaximum());
+        modelator.setMinMatrixValue(minimumShownValue.getMinimum());
+        modelator.generate();
+        setMatrixPanel();
     }
 
     public void run() {
-        this.setVisible(true);
+        setExtendedState(MAXIMIZED_BOTH);
+        setVisible(true);
+        setResizable(false);
     }
     
     private void addDocumentListeners() {
@@ -40,6 +52,7 @@ public class Display extends javax.swing.JFrame {
                     if (maxValue > minimumShownValue.getMinimum()) {
                         minimumShownValue.setMaximum(maxValue);
                         Display.this.setLabels(minimumShownValue, 10);
+                        reloadMatrix();
                         errorMessage.setVisible(false);
                     }
                 } catch (NumberFormatException exception) {
@@ -54,6 +67,7 @@ public class Display extends javax.swing.JFrame {
                     if (maxValue > minimumShownValue.getMinimum()) {
                         minimumShownValue.setMaximum(maxValue);
                         Display.this.setLabels(minimumShownValue, 10);
+                        reloadMatrix();
                         errorMessage.setVisible(false);
                     }
                 } catch (NumberFormatException exception) {
@@ -74,6 +88,7 @@ public class Display extends javax.swing.JFrame {
                     if (minValue < minimumShownValue.getMaximum()) {
                         minimumShownValue.setMinimum(minValue);
                         Display.this.setLabels(minimumShownValue, 10);
+                        reloadMatrix();
                         errorMessage.setVisible(false);
                     }
                 } catch (NumberFormatException exception) {
@@ -88,6 +103,7 @@ public class Display extends javax.swing.JFrame {
                     if (minValue < minimumShownValue.getMaximum()) {
                         minimumShownValue.setMinimum(minValue);
                         Display.this.setLabels(minimumShownValue, 10);
+                        reloadMatrix();
                         errorMessage.setVisible(false);
                     }
                 } catch (NumberFormatException exception) {
@@ -120,16 +136,18 @@ public class Display extends javax.swing.JFrame {
     
     private void setMatrixPanel() {
         matrixPanel = modelator.getMatrixPanel(minimumShownValue.getValue());
-        
         getContentPane().removeAll();
         getContentPane().add(matrixPanel);
         getContentPane().add(configPanel);
+        this.validate();
+        this.repaint();
     }
+    
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         configPanel = new javax.swing.JPanel();
         sliderPanel = new javax.swing.JPanel();
@@ -146,14 +164,12 @@ public class Display extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("Matriz aleatoria"); // NOI18N
         setPreferredSize(new java.awt.Dimension(640, 480));
-        java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
-        layout.columnWidths = new int[] {4};
-        layout.rowHeights = new int[] {3};
-        getContentPane().setLayout(layout);
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
-        configPanel.setLayout(new javax.swing.BoxLayout(configPanel, javax.swing.BoxLayout.PAGE_AXIS));
+        configPanel.setLayout(new java.awt.BorderLayout());
 
         sliderPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        sliderPanel.setLayout(new javax.swing.BoxLayout(sliderPanel, javax.swing.BoxLayout.PAGE_AXIS));
 
         minimumShownValue.setMajorTickSpacing(10);
         minimumShownValue.setOrientation(javax.swing.JSlider.VERTICAL);
@@ -164,36 +180,17 @@ public class Display extends javax.swing.JFrame {
                 minimumShownValueStateChanged(evt);
             }
         });
+        sliderPanel.add(minimumShownValue);
 
-        javax.swing.GroupLayout sliderPanelLayout = new javax.swing.GroupLayout(sliderPanel);
-        sliderPanel.setLayout(sliderPanelLayout);
-        sliderPanelLayout.setHorizontalGroup(
-            sliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 418, Short.MAX_VALUE)
-            .addGroup(sliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(sliderPanelLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(minimumShownValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        sliderPanelLayout.setVerticalGroup(
-            sliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 177, Short.MAX_VALUE)
-            .addGroup(sliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(sliderPanelLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(minimumShownValue, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-
-        configPanel.add(sliderPanel);
+        configPanel.add(sliderPanel, java.awt.BorderLayout.CENTER);
 
         rangeInputPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         rangeInputPanel.setLayout(new javax.swing.BoxLayout(rangeInputPanel, javax.swing.BoxLayout.PAGE_AXIS));
 
         maxValue.setBorder(javax.swing.BorderFactory.createEmptyBorder(25, 15, 25, 15));
-        maxValue.setLayout(new javax.swing.BoxLayout(maxValue, javax.swing.BoxLayout.LINE_AXIS));
+        maxValue.setLayout(new javax.swing.BoxLayout(maxValue, javax.swing.BoxLayout.PAGE_AXIS));
 
+        maxValueLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         maxValueLabel.setText("Valor máximo");
         maxValueLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
         maxValue.add(maxValueLabel);
@@ -209,7 +206,7 @@ public class Display extends javax.swing.JFrame {
         rangeInputPanel.add(maxValue);
 
         minValue.setBorder(javax.swing.BorderFactory.createEmptyBorder(25, 15, 25, 15));
-        minValue.setLayout(new javax.swing.BoxLayout(minValue, javax.swing.BoxLayout.LINE_AXIS));
+        minValue.setLayout(new javax.swing.BoxLayout(minValue, javax.swing.BoxLayout.PAGE_AXIS));
 
         minValueLabel.setText("Valor mínimo");
         minValueLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
@@ -221,21 +218,14 @@ public class Display extends javax.swing.JFrame {
         rangeInputPanel.add(minValue);
 
         errorMessage.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        errorMessage.setForeground(new java.awt.Color(255, 0, 0));
         errorMessage.setText("Solo números sin coma");
         rangeInputPanel.add(errorMessage);
         errorMessage.setVisible(false);
 
-        configPanel.add(rangeInputPanel);
+        configPanel.add(rangeInputPanel, java.awt.BorderLayout.SOUTH);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipadx = 77;
-        gridBagConstraints.ipady = 40;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(11, 10, 11, 10);
-        getContentPane().add(configPanel, gridBagConstraints);
+        getContentPane().add(configPanel);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -246,39 +236,9 @@ public class Display extends javax.swing.JFrame {
 
     private void minimumShownValueStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_minimumShownValueStateChanged
         setMatrixPanel();
+        System.out.println(minimumShownValue.getValue());
     }//GEN-LAST:event_minimumShownValueStateChanged
 
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Display.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Display.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Display.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Display.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Display().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel configPanel;
