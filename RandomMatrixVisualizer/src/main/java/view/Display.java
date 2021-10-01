@@ -5,6 +5,7 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import java.util.Hashtable;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -13,6 +14,8 @@ public class Display extends javax.swing.JFrame {
 
     MatrixPanel matrixPanel;
     MatrixModelator modelator;
+    DocumentListener maxDL, minDL;
+    String maxText, minText;
     
     public Display() {
         try {
@@ -21,6 +24,8 @@ public class Display extends javax.swing.JFrame {
             System.err.println( "Failed to initialize LaF" );
         }
         initComponents();
+        maxText = "";
+        minText = "";
         addDocumentListeners();
         modelator = new MatrixModelator();
         modelator.setMaxMatrixValue(minimumShownValue.getMaximum());
@@ -43,8 +48,19 @@ public class Display extends javax.swing.JFrame {
         setResizable(false);
     }
     
+    private void resetText(JTextField field, DocumentListener listener, String text) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                field.getDocument().removeDocumentListener(listener);
+                field.setText(text);
+                field.getDocument().addDocumentListener(listener);
+            }
+        });
+    }
+    
     private void addDocumentListeners() {
-        maxValueInput.getDocument().addDocumentListener(new DocumentListener() {
+        maxDL = new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 try {
@@ -55,7 +71,9 @@ public class Display extends javax.swing.JFrame {
                         reloadMatrix();
                         errorMessage.setVisible(false);
                     }
+                    maxText = maxValueInput.getText();
                 } catch (NumberFormatException exception) {
+                    resetText(maxValueInput, maxDL, maxText);
                     errorMessage.setVisible(true);
                 }
             }
@@ -70,8 +88,17 @@ public class Display extends javax.swing.JFrame {
                         reloadMatrix();
                         errorMessage.setVisible(false);
                     }
+                    maxText = maxValueInput.getText();
                 } catch (NumberFormatException exception) {
-                    errorMessage.setVisible(true);
+                    if (!maxValueInput.getText().equals("")) {
+                        resetText(maxValueInput, maxDL, maxText);
+                        errorMessage.setVisible(true);
+                    }
+                    else {
+                        maxText = "";
+                        errorMessage.setVisible(false);
+                    }
+                    
                 }
             }
 
@@ -79,8 +106,8 @@ public class Display extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent e) {
             }
             
-        });
-        minValueInput.getDocument().addDocumentListener(new DocumentListener() {
+        };
+        minDL = new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 try {
@@ -92,6 +119,7 @@ public class Display extends javax.swing.JFrame {
                         errorMessage.setVisible(false);
                     }
                 } catch (NumberFormatException exception) {
+                    resetText(minValueInput, minDL, minText);
                     errorMessage.setVisible(true);
                 }
             }
@@ -107,7 +135,13 @@ public class Display extends javax.swing.JFrame {
                         errorMessage.setVisible(false);
                     }
                 } catch (NumberFormatException exception) {
-                    errorMessage.setVisible(true);
+                    if (!minValueInput.getText().equals("")) {
+                        resetText(minValueInput, minDL, minText);
+                        errorMessage.setVisible(true);
+                    } else {
+                        minText = "";
+                        errorMessage.setVisible(false);
+                    }
                 }
             }
 
@@ -115,7 +149,9 @@ public class Display extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent e) {
             }
             
-        });
+        };
+        maxValueInput.getDocument().addDocumentListener(maxDL);
+        minValueInput.getDocument().addDocumentListener(minDL);
     }
     
     private void setLabels(JSlider slider, int step) {
@@ -142,8 +178,6 @@ public class Display extends javax.swing.JFrame {
         this.validate();
         this.repaint();
     }
-    
-    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -196,11 +230,6 @@ public class Display extends javax.swing.JFrame {
         maxValue.add(maxValueLabel);
 
         maxValueInput.setBorder(null);
-        maxValueInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maxValueInputActionPerformed(evt);
-            }
-        });
         maxValue.add(maxValueInput);
 
         rangeInputPanel.add(maxValue);
@@ -229,10 +258,6 @@ public class Display extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void maxValueInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxValueInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_maxValueInputActionPerformed
 
     private void minimumShownValueStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_minimumShownValueStateChanged
         setMatrixPanel();
