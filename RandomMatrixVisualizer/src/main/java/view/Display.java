@@ -170,8 +170,12 @@ public class Display extends javax.swing.JFrame {
                         errorMessage.setVisible(false);
                     }
                 } catch (NumberFormatException exception) {
-                    resetText(minValueInput, minDL, minText);
-                    errorMessage.setVisible(true);
+                    if(minText.equals("") && minValueInput.getText().equals("-")){
+                        
+                    } else {
+                        resetText(minValueInput, minDL, minText);
+                        errorMessage.setVisible(true);
+                    }
                 }
             }
 
@@ -215,8 +219,12 @@ public class Display extends javax.swing.JFrame {
                     }
                     maxText = maxValueInput.getText();
                 } catch (NumberFormatException exception) {
-                    resetText(maxValueInput, maxDL, maxText);
-                    errorMessage.setVisible(true);
+                    if(maxText.equals("") && maxValueInput.getText().equals("-")){
+                        
+                    } else {
+                        resetText(maxValueInput, maxDL, maxText);
+                        errorMessage.setVisible(true);
+                    }
                 }
             }
 

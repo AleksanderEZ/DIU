@@ -6,10 +6,10 @@ import javax.swing.JPanel;
 
 public class MatrixPanel extends JPanel{
 
-    private Float[][] matrix;
-    private int matrixSize;
+    private final Integer[][] matrix;
+    private final int matrixSize;
             
-    public MatrixPanel(Float[][] matrixToShow, int threshold) {
+    public MatrixPanel(Integer[][] matrixToShow, int threshold) {
         matrix = matrixToShow;
         matrixSize = matrix.length;
         setLayout(new GridLayout(matrixSize, matrixSize));
@@ -31,5 +31,4 @@ public class MatrixPanel extends JPanel{
             System.out.println("");
         }
     }
-
 }

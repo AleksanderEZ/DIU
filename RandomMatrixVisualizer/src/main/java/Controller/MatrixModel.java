@@ -9,7 +9,7 @@ public class MatrixModel {
     private float minMatrixValue;
     private float maxMatrixValue;
     private final RandomSquareMatrixGenerator matrixGenerator;
-    private Float[][] matrixToShow;
+    private Integer[][] matrixToShow;
             
     public MatrixModel() {
         minMatrixValue = 1f;
@@ -17,11 +17,11 @@ public class MatrixModel {
         matrixGenerator = new RandomSquareMatrixGenerator(MATRIX_SIZE);
     }
 
-    public void setMinMatrixValue(float minMatrixValue) {
+    public void setMinMatrixValue(int minMatrixValue) {
         this.minMatrixValue = minMatrixValue;
     }
 
-    public void setMaxMatrixValue(float maxMatrixValue) {
+    public void setMaxMatrixValue(int maxMatrixValue) {
         this.maxMatrixValue = maxMatrixValue;
     }
     
