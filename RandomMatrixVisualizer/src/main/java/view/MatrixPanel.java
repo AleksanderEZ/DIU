@@ -20,7 +20,7 @@ public class MatrixPanel extends JPanel{
     private void showMatrix(int threshold) {
         for (int i = 0; i < matrixSize; i++) {
             for (int j = 0; j < matrixSize; j++) {
-                if (matrix[i][j] > threshold) {
+                if (matrix[i][j] >= threshold) {
                     add(new MatrixCell(matrix[i][j].toString()));
                     System.out.print(matrix[i][j].toString() + " ");
                 } else {
