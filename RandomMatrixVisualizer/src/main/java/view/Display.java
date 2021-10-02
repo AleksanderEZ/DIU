@@ -32,6 +32,7 @@ public class Display extends javax.swing.JFrame {
         errorMessage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(870, 340));
         setName("Matriz aleatoria"); // NOI18N
         setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
