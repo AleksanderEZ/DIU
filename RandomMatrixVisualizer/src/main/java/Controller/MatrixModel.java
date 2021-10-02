@@ -1,20 +1,20 @@
 package Controller;
 
 import view.MatrixPanel;
-import Model.SquareMatrixGenerator;
+import Model.RandomSquareMatrixGenerator;
 
-public class MatrixModelator {
+public class MatrixModel {
     
     private final int MATRIX_SIZE = 10;
     private float minMatrixValue;
     private float maxMatrixValue;
-    private final SquareMatrixGenerator matrixGenerator;
+    private final RandomSquareMatrixGenerator matrixGenerator;
     private Float[][] matrixToShow;
             
-    public MatrixModelator() {
+    public MatrixModel() {
         minMatrixValue = 1f;
         maxMatrixValue = 1f;
-        matrixGenerator = new SquareMatrixGenerator(MATRIX_SIZE);
+        matrixGenerator = new RandomSquareMatrixGenerator(MATRIX_SIZE);
     }
 
     public void setMinMatrixValue(float minMatrixValue) {

@@ -1,7 +1,7 @@
 Model\SquareMatrixGenerator.class
-Controller\MatrixModelator.class
 randommatrixvisualizer\RandomMatrixVisualizer.class
 view\Display$1.class
+Controller\MatrixModel.class
 view\Display$3.class
 view\MatrixCell.class
 view\Display$4.class

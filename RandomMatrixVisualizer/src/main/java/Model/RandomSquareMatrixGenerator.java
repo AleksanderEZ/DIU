@@ -1,10 +1,10 @@
 package Model;
 
-public class SquareMatrixGenerator {
+public class RandomSquareMatrixGenerator {
     
     private final int MATRIX_SIZE;
     
-    public SquareMatrixGenerator(int MATRIX_SIZE) {
+    public RandomSquareMatrixGenerator(int MATRIX_SIZE) {
         this.MATRIX_SIZE = MATRIX_SIZE;
     }
     
