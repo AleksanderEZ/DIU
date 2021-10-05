@@ -1,5 +1,5 @@
-# DIU
-University subject. Design of Graphical User Interfaces
+# Design of User Interfaces
+University subject for the design of graphical user interfaces
 
 
 1. USD/EUR EUR/USD converter
