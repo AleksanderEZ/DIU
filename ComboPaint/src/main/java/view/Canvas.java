@@ -24,20 +24,20 @@ public class Canvas extends JPanel {
     
     public void setBackgroundColor(Color color) {
         backgroundColor = color;
+        setBackground(backgroundColor);
         repaint();
     }
     
     public void setForegroundColor(Color color) {
         foregroundColor = color;
+        setForeground(foregroundColor);
         repaint();
     }
     
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        this.setBackground(backgroundColor);
-        this.setForeground(foregroundColor);
-        
+                
         if (positions[0] != null) {
             Point[] copy = new Point[positions.length];
             for (int i = 0; i < positions.length; i++) {
@@ -46,7 +46,7 @@ public class Canvas extends JPanel {
             for (int i = 1; i < positions.length; i++) {
                 positions[i] = copy[i-1];
             }
-            positions[0] = mousePosition;
+            positions[0] = (Point) mousePosition.clone();
 
             for (Point position : positions) {
                 g.fillOval(position.x - diameter/2, position.y - diameter/2, diameter, diameter);
@@ -55,6 +55,8 @@ public class Canvas extends JPanel {
             for (int i = 0; i < positions.length; i++) {
                 positions[i] = new Point(-100, -100);
             }
+            setBackground(backgroundColor);
+            setForeground(foregroundColor);
         }
     }
 }
