@@ -57,6 +57,7 @@ public class Display extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void canvasMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvasMouseMoved
+        canvas.setMousePosition(evt.getX(), evt.getY());
         canvas.repaint();
     }//GEN-LAST:event_canvasMouseMoved
 
