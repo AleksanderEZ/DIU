@@ -18,7 +18,7 @@ public class Display extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(100, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         jComboBox2 = new javax.swing.JComboBox<>();
-        canvas1 = new view.Canvas();
+        canvas = new view.Canvas();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Paint!");
@@ -34,23 +34,34 @@ public class Display extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.NORTH);
 
-        javax.swing.GroupLayout canvas1Layout = new javax.swing.GroupLayout(canvas1);
-        canvas1.setLayout(canvas1Layout);
-        canvas1Layout.setHorizontalGroup(
-            canvas1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        canvas.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                canvasMouseMoved(evt);
+            }
+        });
+
+        javax.swing.GroupLayout canvasLayout = new javax.swing.GroupLayout(canvas);
+        canvas.setLayout(canvasLayout);
+        canvasLayout.setHorizontalGroup(
+            canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 400, Short.MAX_VALUE)
         );
-        canvas1Layout.setVerticalGroup(
-            canvas1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        canvasLayout.setVerticalGroup(
+            canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 270, Short.MAX_VALUE)
         );
 
-        getContentPane().add(canvas1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(canvas, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void canvasMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvasMouseMoved
+        canvas.repaint();
+    }//GEN-LAST:event_canvasMouseMoved
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private view.Canvas canvas1;
+    private view.Canvas canvas;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
