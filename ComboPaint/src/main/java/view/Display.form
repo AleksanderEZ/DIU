@@ -93,6 +93,7 @@
     </Container>
     <Container class="view.Canvas" name="canvas">
       <Events>
+        <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="canvasMouseDragged"/>
         <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="canvasMouseMoved"/>
       </Events>
       <Constraints>

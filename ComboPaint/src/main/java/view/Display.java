@@ -61,6 +61,9 @@ public class Display extends javax.swing.JFrame {
         getContentPane().add(jPanel1, java.awt.BorderLayout.NORTH);
 
         canvas.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                canvasMouseDragged(evt);
+            }
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 canvasMouseMoved(evt);
             }
@@ -98,6 +101,11 @@ public class Display extends javax.swing.JFrame {
     private void foregroundBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_foregroundBoxActionPerformed
         canvas.setForegroundColor(colorMap.get(foregroundBox.getSelectedItem()));
     }//GEN-LAST:event_foregroundBoxActionPerformed
+
+    private void canvasMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvasMouseDragged
+        canvas.setMousePosition(evt.getX(), evt.getY());
+        canvas.repaint();
+    }//GEN-LAST:event_canvasMouseDragged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> backgroundBox;
