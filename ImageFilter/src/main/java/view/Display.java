@@ -1,23 +1,14 @@
 package view;
 
-import control.UtilsPractica5;
+import control.FileImageLoader;
+import java.awt.image.BufferedImage;
+import javax.swing.JPanel;
 
 public class Display extends javax.swing.JFrame {
-
-    public Display() {
-        initComponents();
-    }
-    
-    public void run() {
-        setVisible(true);
-    }
-
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         logoGroup = new javax.swing.ButtonGroup();
-        placeholder = new javax.swing.JPanel();
         settingsPanel = new javax.swing.JPanel();
         colorSettingsPanel = new javax.swing.JPanel();
         colorTitlePanel = new javax.swing.JPanel();
@@ -35,21 +26,9 @@ public class Display extends javax.swing.JFrame {
         topRightButton = new javax.swing.JRadioButton();
         bottomLeftButton = new javax.swing.JRadioButton();
         bottomRightButton = new javax.swing.JRadioButton();
+        display = new javax.swing.JLayeredPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout placeholderLayout = new javax.swing.GroupLayout(placeholder);
-        placeholder.setLayout(placeholderLayout);
-        placeholderLayout.setHorizontalGroup(
-            placeholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 658, Short.MAX_VALUE)
-        );
-        placeholderLayout.setVerticalGroup(
-            placeholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 196, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(placeholder, java.awt.BorderLayout.CENTER);
 
         settingsPanel.setLayout(new javax.swing.BoxLayout(settingsPanel, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -106,14 +85,18 @@ public class Display extends javax.swing.JFrame {
         logoPanel.setLayout(new java.awt.GridLayout(2, 2, 5, 5));
 
         logoGroup.add(topLeftButton);
+        topLeftButton.setMnemonic('0');
+        topLeftButton.setSelected(true);
         topLeftButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logoPanel.add(topLeftButton);
 
         logoGroup.add(topRightButton);
+        topRightButton.setMnemonic('1');
         topRightButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logoPanel.add(topRightButton);
 
         logoGroup.add(bottomLeftButton);
+        bottomLeftButton.setMnemonic('2');
         bottomLeftButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logoPanel.add(bottomLeftButton);
 
@@ -127,11 +110,23 @@ public class Display extends javax.swing.JFrame {
 
         getContentPane().add(settingsPanel, java.awt.BorderLayout.PAGE_START);
 
+        javax.swing.GroupLayout displayLayout = new javax.swing.GroupLayout(display);
+        display.setLayout(displayLayout);
+        displayLayout.setHorizontalGroup(
+            displayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 658, Short.MAX_VALUE)
+        );
+        displayLayout.setVerticalGroup(
+            displayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 255, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(display, java.awt.BorderLayout.CENTER);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void allColorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allColorsActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_allColorsActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -143,16 +138,56 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JPanel colorSettingsPanel;
     private javax.swing.JLabel colorTitle;
     private javax.swing.JPanel colorTitlePanel;
+    private javax.swing.JLayeredPane display;
     private javax.swing.JCheckBox greenButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.ButtonGroup logoGroup;
     private javax.swing.JPanel logoPanel;
     private javax.swing.JPanel logoSettingsPanel;
     private javax.swing.JPanel logoTitlePanel;
-    private javax.swing.JPanel placeholder;
     private javax.swing.JCheckBox redButton;
     private javax.swing.JPanel settingsPanel;
     private javax.swing.JRadioButton topLeftButton;
     private javax.swing.JRadioButton topRightButton;
     // End of variables declaration//GEN-END:variables
+    
+    private final String PATH_TO_LOGO_IMAGE = 
+            "F:\\Users\\Nueva carpeta\\DIU\\Prácticas\\DIU\\ImageFilter\\src\\main\\java\\view\\fishlogo.png";
+    private final String PATH_TO_BACKGROUND_IMAGE =
+            "F:\\Users\\Nueva carpeta\\DIU\\Prácticas\\DIU\\ImageFilter\\src\\main\\java\\view\\background.jpg";
+    private final int ICON_ROWS = 2;
+    private final int ICON_COLUMNS = 2;
+    private ImagePanel backgroundPanel;
+    private IconPanel frontPanel;
+    
+    public Display() {
+        initComponents();
+        layeredPaneLayering();
+        
+        setVisible(true);
+    }
+    
+    private void layeredPaneLayering() {
+        int activePositionButton = getSelectedButton();
+        BufferedImage backgroundImage = new FileImageLoader(PATH_TO_BACKGROUND_IMAGE).load();
+        BufferedImage logoImage = new FileImageLoader(PATH_TO_LOGO_IMAGE).load();
+        
+        backgroundPanel = new ImagePanel(backgroundImage);
+        frontPanel = new IconPanel(activePositionButton, logoImage, ICON_ROWS, ICON_COLUMNS);
+        display.add(backgroundPanel, 0);
+        display.add(frontPanel, 1);
+        backgroundPanel.updatePanel();
+        frontPanel.updatePanel();
+        repaintDisplay();
+    }
+    
+    private int getSelectedButton() {
+        int selection = Character.getNumericValue(logoGroup.getSelection().getMnemonic());
+        return selection;
+    }
+
+    private void repaintDisplay() {
+        display.revalidate();
+        display.repaint();
+    }
 }
