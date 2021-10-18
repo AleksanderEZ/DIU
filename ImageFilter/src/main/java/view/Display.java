@@ -1,8 +1,8 @@
 package view;
 
+
 import control.FileImageLoader;
 import java.awt.image.BufferedImage;
-import javax.swing.JPanel;
 
 public class Display extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -27,7 +27,10 @@ public class Display extends javax.swing.JFrame {
         topRightButton = new javax.swing.JRadioButton();
         bottomLeftButton = new javax.swing.JRadioButton();
         bottomRightButton = new javax.swing.JRadioButton();
+        viewPanel = new javax.swing.JPanel();
         display = new javax.swing.JLayeredPane();
+        backgroundPanel = new view.ImagePanel();
+        iconPanel = new view.IconPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -114,18 +117,40 @@ public class Display extends javax.swing.JFrame {
 
         getContentPane().add(settingsPanel, java.awt.BorderLayout.PAGE_START);
 
-        javax.swing.GroupLayout displayLayout = new javax.swing.GroupLayout(display);
-        display.setLayout(displayLayout);
-        displayLayout.setHorizontalGroup(
-            displayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        viewPanel.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
+        backgroundPanel.setLayout(backgroundPanelLayout);
+        backgroundPanelLayout.setHorizontalGroup(
+            backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        backgroundPanelLayout.setVerticalGroup(
+            backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        display.add(backgroundPanel);
+        backgroundPanel.setBounds(0, 0, 660, 260);
+
+        javax.swing.GroupLayout iconPanelLayout = new javax.swing.GroupLayout(iconPanel);
+        iconPanel.setLayout(iconPanelLayout);
+        iconPanelLayout.setHorizontalGroup(
+            iconPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 658, Short.MAX_VALUE)
         );
-        displayLayout.setVerticalGroup(
-            displayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        iconPanelLayout.setVerticalGroup(
+            iconPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 255, Short.MAX_VALUE)
         );
 
-        getContentPane().add(display, java.awt.BorderLayout.CENTER);
+        display.setLayer(iconPanel, javax.swing.JLayeredPane.DRAG_LAYER);
+        display.add(iconPanel);
+        iconPanel.setBounds(0, 0, 658, 255);
+
+        viewPanel.add(display, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(viewPanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -136,6 +161,7 @@ public class Display extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox allColors;
+    private view.ImagePanel backgroundPanel;
     private javax.swing.JCheckBox blueButton;
     private javax.swing.JRadioButton bottomLeftButton;
     private javax.swing.JRadioButton bottomRightButton;
@@ -146,6 +172,7 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JPanel colorTitlePanel;
     private javax.swing.JLayeredPane display;
     private javax.swing.JCheckBox greenButton;
+    private view.IconPanel iconPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.ButtonGroup logoGroup;
     private javax.swing.JPanel logoPanel;
@@ -155,6 +182,7 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JPanel settingsPanel;
     private javax.swing.JRadioButton topLeftButton;
     private javax.swing.JRadioButton topRightButton;
+    private javax.swing.JPanel viewPanel;
     // End of variables declaration//GEN-END:variables
     
     // Las rutas tienen que estar relativas a la carpeta madre de en la que esté 
@@ -165,27 +193,23 @@ public class Display extends javax.swing.JFrame {
             "assets/background.jpg";
     private final int ICON_ROWS = 2;
     private final int ICON_COLUMNS = 2;
-    private ImagePanel backgroundPanel;
-    private IconPanel frontPanel;
     
     public Display() {
         initComponents();
-        layeredPaneLayering();
-        
+        setUpViewPanels();
         setVisible(true);
     }
     
-    private void layeredPaneLayering() {
+    private void setUpViewPanels() {
         int activePositionButton = getSelectedButton();
         BufferedImage backgroundImage = new FileImageLoader(PATH_TO_BACKGROUND_IMAGE).load();
         BufferedImage logoImage = new FileImageLoader(PATH_TO_LOGO_IMAGE).load();
         
-        backgroundPanel = new ImagePanel(backgroundImage);
-        frontPanel = new IconPanel(activePositionButton, logoImage, ICON_ROWS, ICON_COLUMNS);
-        display.add(backgroundPanel, 0);
-        display.add(frontPanel, 1);
-        backgroundPanel.updatePanel();
-        frontPanel.updatePanel();
+        backgroundPanel.setImage(backgroundImage);
+        
+        iconPanel.setImage(logoImage);
+        iconPanel.setPosition(activePositionButton);
+        
         repaintDisplay();
     }
     
@@ -195,6 +219,8 @@ public class Display extends javax.swing.JFrame {
     }
 
     private void repaintDisplay() {
+        backgroundPanel.updatePanel();
+        iconPanel.updatePanel();
         display.revalidate();
         display.repaint();
     }

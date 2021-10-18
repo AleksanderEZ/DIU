@@ -9,39 +9,40 @@ import javax.swing.JPanel;
 public class IconPanel extends JPanel {
 
     JLabel icon;
-    JPanel[] panelHolder;
-    int nCells;
+    JPanel panelHolder[] = new JPanel[4];
+    int position;
 
-    public IconPanel(int pos, BufferedImage icon, int dim1, int dim2) {
-        nCells = dim1*dim2;
-        this.panelHolder = new JPanel[nCells];
-
-        setLayout(new GridLayout(dim1, dim2));
+    public IconPanel() {
+        setLayout(new GridLayout(2, 2));
+        this.icon = new JLabel();
         setOpaque(false);
-        
-        createSwingImageComponent(icon);
-        
-        setCurrentPosition(pos);
-    }
-
-    private void fillLayout() {
-        for (int element = 0; element < nCells; element++) {
-            panelHolder[element] = new JPanel();
-            add(panelHolder[element]);
-        }
     }
     
-    private void createSwingImageComponent(BufferedImage icon) {
-        this.icon = new JLabel(new ImageIcon(icon));
+    public void setImage(BufferedImage image){
+        remove(icon);
+        icon = new JLabel(new ImageIcon(image));
+        resetPanels();
+    }
+    
+    public void setPosition(int position){
+        this.position = position;
+        resetPanels();
+    }
+    
+    private void resetPanels(){
+        removeAll();
+        for (int i = 0; i < panelHolder.length; i++) {
+            panelHolder[i] = new JPanel();
+            if(i == position){
+                panelHolder[i].add(icon);
+            }
+            add(panelHolder[i]);
+        }
+        updatePanel();
     }
     
     public void updatePanel() {
         revalidate();
         repaint();
-    }
-    
-    public void setCurrentPosition(int pos){
-        fillLayout();
-        panelHolder[pos].add(this.icon);
     }
 }
