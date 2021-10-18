@@ -9,15 +9,15 @@ public class ImagePanel extends JPanel {
     private BufferedImage image;
     private JLabel pictureLabel;
 
-    public ImagePanel(BufferedImage image) {
-        this.image = image;
-        pictureLabel = new JLabel(new ImageIcon(image));
+    public ImagePanel() {
+        pictureLabel = new JLabel();
         add(pictureLabel);
-        repaint();
+        updatePanel();
     }
     
     public void setImage(BufferedImage image) {
         this.image = image;
+        pictureLabel = new JLabel(new ImageIcon(image));
     }
     
     public void updatePanel() {
