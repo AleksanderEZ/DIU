@@ -9,6 +9,7 @@ public class Display extends javax.swing.JFrame {
     private void initComponents() {
 
         logoGroup = new javax.swing.ButtonGroup();
+        colorGroup = new javax.swing.ButtonGroup();
         settingsPanel = new javax.swing.JPanel();
         colorSettingsPanel = new javax.swing.JPanel();
         colorTitlePanel = new javax.swing.JPanel();
@@ -55,12 +56,15 @@ public class Display extends javax.swing.JFrame {
         });
         colorPanel.add(allColors);
 
+        colorGroup.add(redButton);
         redButton.setText("Rojo");
         colorPanel.add(redButton);
 
+        colorGroup.add(greenButton);
         greenButton.setText("Verde");
         colorPanel.add(greenButton);
 
+        colorGroup.add(blueButton);
         blueButton.setText("Azul");
         colorPanel.add(blueButton);
 
@@ -127,6 +131,7 @@ public class Display extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void allColorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allColorsActionPerformed
+        
     }//GEN-LAST:event_allColorsActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -134,6 +139,7 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JCheckBox blueButton;
     private javax.swing.JRadioButton bottomLeftButton;
     private javax.swing.JRadioButton bottomRightButton;
+    private javax.swing.ButtonGroup colorGroup;
     private javax.swing.JPanel colorPanel;
     private javax.swing.JPanel colorSettingsPanel;
     private javax.swing.JLabel colorTitle;
@@ -151,10 +157,12 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JRadioButton topRightButton;
     // End of variables declaration//GEN-END:variables
     
+    // Las rutas tienen que estar relativas a la carpeta madre de en la que esté 
+    // FileImageLoader.class, osea en DIU/ImageFilter/target/classes
     private final String PATH_TO_LOGO_IMAGE = 
-            "F:\\Users\\Nueva carpeta\\DIU\\Prácticas\\DIU\\ImageFilter\\src\\main\\java\\view\\fishlogo.png";
+            "assets/fishlogo.png";
     private final String PATH_TO_BACKGROUND_IMAGE =
-            "F:\\Users\\Nueva carpeta\\DIU\\Prácticas\\DIU\\ImageFilter\\src\\main\\java\\view\\background.jpg";
+            "assets/background.jpg";
     private final int ICON_ROWS = 2;
     private final int ICON_COLUMNS = 2;
     private ImagePanel backgroundPanel;
@@ -191,3 +199,8 @@ public class Display extends javax.swing.JFrame {
         display.repaint();
     }
 }
+
+/*       _
+       .__(.)< (MIAU)
+        \___)   
+*/
