@@ -3,29 +3,22 @@ package control;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import view.Display;
 
-public class FileImageLoader implements ImageLoader{
-    
-    String path;
-    
-    public FileImageLoader(String path) {
-        this.path = path;
-    }
-    
+public class FileImageLoader implements ImageLoader {
+
     @Override
-    public BufferedImage load() {
-        return getImage();
-    }
-    
-    private BufferedImage getImage() {
-        InputStream stream = getClass().getClassLoader().getResourceAsStream(path);
+    public BufferedImage load(String path) {
+        File file = new File(path);
+        BufferedImage image = null;
         try {
-            return ImageIO.read(stream);
+            image = ImageIO.read(file);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return image;
     }
 }

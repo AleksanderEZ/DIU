@@ -6,22 +6,34 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ImagePanel extends JPanel {
-    private BufferedImage image;
-    private JLabel pictureLabel;
+
+    JLabel imageLabel;
 
     public ImagePanel() {
-        pictureLabel = new JLabel();
-        add(pictureLabel);
+        imageLabel = new JLabel("No hay imagen");
+        add(imageLabel);
+    }
+
+    public void setImage(BufferedImage image) {
+        clearPanel();
+        imageLabel = new JLabel(new ImageIcon(image));
+        add(imageLabel);
+        resizePanel(image);
         updatePanel();
     }
-    
-    public void setImage(BufferedImage image) {
-        this.image = image;
-        pictureLabel = new JLabel(new ImageIcon(image));
+
+    public void clearPanel() {
+        removeAll();
     }
-    
+
     public void updatePanel() {
         revalidate();
         repaint();
+    }
+
+    private void resizePanel(BufferedImage image) {
+        int height = image.getHeight();
+        int width = image.getWidth();
+        setSize(width, height);
     }
 }

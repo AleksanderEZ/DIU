@@ -1,10 +1,22 @@
 package view;
 
-
-import control.FileImageLoader;
+import com.formdev.flatlaf.FlatDarculaLaf;
 import java.awt.image.BufferedImage;
+import control.FileImageLoader;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JRadioButton;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class Display extends javax.swing.JFrame {
+
+    private final String fishLogoPath = "F:\\Users\\Nueva carpeta\\ImageFilter\\src\\main\\java\\assets\\fishlogo.png";
+    private final String backgroundImagePath = "F:\\Users\\Nueva carpeta\\ImageFilter\\src\\main\\java\\assets\\background.jpg";
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -28,11 +40,12 @@ public class Display extends javax.swing.JFrame {
         bottomLeftButton = new javax.swing.JRadioButton();
         bottomRightButton = new javax.swing.JRadioButton();
         viewPanel = new javax.swing.JPanel();
-        display = new javax.swing.JLayeredPane();
-        backgroundPanel = new view.ImagePanel();
+        layers = new javax.swing.JLayeredPane();
+        imagePanel = new view.ImagePanel();
         iconPanel = new view.IconPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         settingsPanel.setLayout(new javax.swing.BoxLayout(settingsPanel, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -51,6 +64,7 @@ public class Display extends javax.swing.JFrame {
 
         colorPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+        colorGroup.add(allColors);
         allColors.setText("Todo");
         allColors.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -95,20 +109,41 @@ public class Display extends javax.swing.JFrame {
         topLeftButton.setMnemonic('0');
         topLeftButton.setSelected(true);
         topLeftButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        topLeftButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                topLeftButtonActionPerformed(evt);
+            }
+        });
         logoPanel.add(topLeftButton);
 
         logoGroup.add(topRightButton);
         topRightButton.setMnemonic('1');
         topRightButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        topRightButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                topRightButtonActionPerformed(evt);
+            }
+        });
         logoPanel.add(topRightButton);
 
         logoGroup.add(bottomLeftButton);
         bottomLeftButton.setMnemonic('2');
         bottomLeftButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bottomLeftButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bottomLeftButtonActionPerformed(evt);
+            }
+        });
         logoPanel.add(bottomLeftButton);
 
         logoGroup.add(bottomRightButton);
+        bottomRightButton.setMnemonic('3');
         bottomRightButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bottomRightButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bottomRightButtonActionPerformed(evt);
+            }
+        });
         logoPanel.add(bottomRightButton);
 
         logoSettingsPanel.add(logoPanel);
@@ -119,36 +154,12 @@ public class Display extends javax.swing.JFrame {
 
         viewPanel.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
-        backgroundPanel.setLayout(backgroundPanelLayout);
-        backgroundPanelLayout.setHorizontalGroup(
-            backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        backgroundPanelLayout.setVerticalGroup(
-            backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        layers.add(imagePanel);
+        imagePanel.setBounds(0, 4, 415, 210);
+        layers.add(iconPanel);
+        iconPanel.setBounds(0, 0, 410, 220);
 
-        display.add(backgroundPanel);
-        backgroundPanel.setBounds(0, 0, 660, 260);
-
-        javax.swing.GroupLayout iconPanelLayout = new javax.swing.GroupLayout(iconPanel);
-        iconPanel.setLayout(iconPanelLayout);
-        iconPanelLayout.setHorizontalGroup(
-            iconPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 658, Short.MAX_VALUE)
-        );
-        iconPanelLayout.setVerticalGroup(
-            iconPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 255, Short.MAX_VALUE)
-        );
-
-        display.setLayer(iconPanel, javax.swing.JLayeredPane.DRAG_LAYER);
-        display.add(iconPanel);
-        iconPanel.setBounds(0, 0, 658, 255);
-
-        viewPanel.add(display, java.awt.BorderLayout.CENTER);
+        viewPanel.add(layers, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(viewPanel, java.awt.BorderLayout.CENTER);
 
@@ -156,12 +167,65 @@ public class Display extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void allColorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allColorsActionPerformed
-        
+
     }//GEN-LAST:event_allColorsActionPerformed
 
+    private void topLeftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topLeftButtonActionPerformed
+        rePositionLogo(evt);
+    }//GEN-LAST:event_topLeftButtonActionPerformed
+
+    private void topRightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topRightButtonActionPerformed
+        rePositionLogo(evt);
+    }//GEN-LAST:event_topRightButtonActionPerformed
+
+    private void bottomLeftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bottomLeftButtonActionPerformed
+        rePositionLogo(evt);
+    }//GEN-LAST:event_bottomLeftButtonActionPerformed
+
+    private void bottomRightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bottomRightButtonActionPerformed
+        rePositionLogo(evt);
+    }//GEN-LAST:event_bottomRightButtonActionPerformed
+
+    private void rePositionLogo(ActionEvent evt) {
+        int horizontalPos = 0;
+        int verticalPos = 0;
+        int buttonPressed = getSelectedButton(evt);
+        Point imagePanelLocation = imagePanel.getLocation();
+        Dimension iconPanelSize = iconPanel.getSize();
+        Dimension imagePanelSize = imagePanel.getSize();
+        Dimension frameSize = getSize();
+        
+        switch(buttonPressed) {
+            case 0:
+                horizontalPos = imagePanelLocation.x;
+                verticalPos = imagePanelLocation.y;
+                break;
+            case 1:
+                horizontalPos = imagePanelSize.width - iconPanelSize.width;
+                verticalPos = imagePanelLocation.y;
+                break;
+            case 2:
+                horizontalPos = imagePanelLocation.x;
+                verticalPos = frameSize.height - iconPanelSize.height;
+                break;
+            case 3:
+                horizontalPos = imagePanelSize.width - iconPanelSize.width;
+                verticalPos = frameSize.height - iconPanelSize.height;
+                break;
+            default:
+                break;
+        }
+        iconPanel.setLocation(horizontalPos, verticalPos);
+    }
+    
+    private int getSelectedButton(ActionEvent evt) {
+        JRadioButton button = (JRadioButton) evt.getSource();
+        int selection = Character.getNumericValue(button.getMnemonic());
+        return selection;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox allColors;
-    private view.ImagePanel backgroundPanel;
     private javax.swing.JCheckBox blueButton;
     private javax.swing.JRadioButton bottomLeftButton;
     private javax.swing.JRadioButton bottomRightButton;
@@ -170,10 +234,11 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JPanel colorSettingsPanel;
     private javax.swing.JLabel colorTitle;
     private javax.swing.JPanel colorTitlePanel;
-    private javax.swing.JLayeredPane display;
     private javax.swing.JCheckBox greenButton;
     private view.IconPanel iconPanel;
+    private view.ImagePanel imagePanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLayeredPane layers;
     private javax.swing.ButtonGroup logoGroup;
     private javax.swing.JPanel logoPanel;
     private javax.swing.JPanel logoSettingsPanel;
@@ -185,48 +250,55 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JPanel viewPanel;
     // End of variables declaration//GEN-END:variables
     
-    // Las rutas tienen que estar relativas a la carpeta madre de en la que esté 
-    // FileImageLoader.class, osea en DIU/ImageFilter/target/classes
-    private final String PATH_TO_LOGO_IMAGE = 
-            "assets/fishlogo.png";
-    private final String PATH_TO_BACKGROUND_IMAGE =
-            "assets/background.jpg";
-    private final int ICON_ROWS = 2;
-    private final int ICON_COLUMNS = 2;
-    
     public Display() {
+        setLookAndFeel();
         initComponents();
-        setUpViewPanels();
+        iconPanelSetUp();
+        imagePanelSetUp();
+        setTitle("Image Filter");
+    }
+
+    public void run() {
         setVisible(true);
     }
-    
-    private void setUpViewPanels() {
-        int activePositionButton = getSelectedButton();
-        BufferedImage backgroundImage = new FileImageLoader(PATH_TO_BACKGROUND_IMAGE).load();
-        BufferedImage logoImage = new FileImageLoader(PATH_TO_LOGO_IMAGE).load();
-        
-        backgroundPanel.setImage(backgroundImage);
-        
-        iconPanel.setImage(logoImage);
-        iconPanel.setPosition(activePositionButton);
-        
-        repaintDisplay();
-    }
-    
-    private int getSelectedButton() {
-        int selection = Character.getNumericValue(logoGroup.getSelection().getMnemonic());
-        return selection;
+
+    private void updatePanel() {
+        revalidate();
+        repaint();
     }
 
-    private void repaintDisplay() {
-        backgroundPanel.updatePanel();
-        iconPanel.updatePanel();
-        display.revalidate();
-        display.repaint();
+    private BufferedImage getImageFromPath(String path) {
+        return new FileImageLoader().load(path);
+    }
+
+    private void iconPanelSetUp() {
+        BufferedImage iconImage = getImageFromPath(fishLogoPath);
+        iconPanel.setImage(iconImage);
+        layers.setLayer(iconPanel, 2);
+        updatePanel();
+    }
+
+    private void imagePanelSetUp() {
+        BufferedImage backgroundImage = getImageFromPath(backgroundImagePath);
+        imagePanel.setImage(backgroundImage);
+        resizePanel(backgroundImage);
+        layers.setLayer(imagePanel, 1);
+        updatePanel();
+    }
+
+    private void resizePanel(BufferedImage image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        setSize(width, height);
+        setMaximumSize(getSize());
+        setMinimumSize(getSize());
+    }
+
+    private void setLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel( new FlatDarculaLaf() );
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
-
-/*       _
-       .__(.)< (MIAU)
-        \___)   
-*/
