@@ -17,17 +17,13 @@ public class IconPanel extends JPanel {
     }
 
     public void setImage(BufferedImage image, int width) {
-        clearPanel();
+        removeAll();
         this.width = width;
         this.height = (width*image.getHeight())/image.getWidth();
         imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(width, height, BufferedImage.SCALE_DEFAULT)));
         add(imageLabel);
         setSize(width, height);
         updatePanel();
-    }
-
-    public void clearPanel() {
-        removeAll();
     }
 
     public void updatePanel() {

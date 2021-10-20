@@ -1,6 +1,7 @@
 package view;
 
 import control.UtilsPractica5;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -18,25 +19,23 @@ public class ImagePanel extends JPanel {
     }
 
     public void setImage(BufferedImage image, int width, boolean red, boolean green, boolean blue) {
-        clearPanel();
+        removeAll();
         this.image = image;
         BufferedImage transformedImage = UtilsPractica5.seleccionarComponentes(image, !red, !green, !blue);
-        System.out.println(transformedImage.getWidth() + ", " + transformedImage.getHeight());
-        System.out.println(image.getWidth() + ", " + image.getHeight());
         this.width = width;
         this.height = (width*image.getHeight())/image.getWidth();
         imageLabel = new JLabel(new ImageIcon(transformedImage.getScaledInstance(width, height, BufferedImage.SCALE_DEFAULT)));
         add(imageLabel);
-        setSize(width, height);
+        Dimension size = new Dimension(width, height);
+        setMinimumSize(size);
+        setPreferredSize(size);
+        setMaximumSize(size);
+        setSize(size);
         updatePanel();
     }
     
     public BufferedImage getImage() {
         return image;
-    }
-
-    public void clearPanel() {
-        removeAll();
     }
 
     public void updatePanel() {
