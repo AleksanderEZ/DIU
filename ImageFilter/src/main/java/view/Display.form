@@ -4,8 +4,6 @@
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="logoGroup">
     </Component>
-    <Component class="javax.swing.ButtonGroup" name="colorGroup">
-    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
@@ -81,9 +79,6 @@
               <SubComponents>
                 <Component class="javax.swing.JCheckBox" name="allColors">
                   <Properties>
-                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="colorGroup"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Todo"/>
                   </Properties>
                   <Events>
@@ -93,7 +88,7 @@
                 <Component class="javax.swing.JCheckBox" name="redButton">
                   <Properties>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="colorGroup"/>
+                      <ComponentRef name="default"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Rojo"/>
                   </Properties>
@@ -101,7 +96,7 @@
                 <Component class="javax.swing.JCheckBox" name="greenButton">
                   <Properties>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="colorGroup"/>
+                      <ComponentRef name="default"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Verde"/>
                   </Properties>
@@ -109,7 +104,7 @@
                 <Component class="javax.swing.JCheckBox" name="blueButton">
                   <Properties>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="colorGroup"/>
+                      <ComponentRef name="default"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Azul"/>
                   </Properties>

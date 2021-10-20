@@ -1,24 +1,20 @@
 package control;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
-import view.Display;
 
 public class FileImageLoader implements ImageLoader {
 
     @Override
     public BufferedImage load(String path) {
-        File file = new File(path);
-        BufferedImage image = null;
+        InputStream stream = getClass().getClassLoader().getResourceAsStream(path);
         try {
-            image = ImageIO.read(file);
+            return ImageIO.read(stream);
         } catch (IOException ex) {
-            Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
-        return image;
+        return null;
     }
 }

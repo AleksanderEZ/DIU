@@ -6,22 +6,24 @@ import control.FileImageLoader;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractButton;
+import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class Display extends javax.swing.JFrame {
 
-    private final String fishLogoPath = "F:\\Users\\Nueva carpeta\\ImageFilter\\src\\main\\java\\assets\\fishlogo.png";
-    private final String backgroundImagePath = "F:\\Users\\Nueva carpeta\\ImageFilter\\src\\main\\java\\assets\\background.jpg";
+    private final String fishLogoPath = "assets/fishlogo.png";
+    private final String backgroundImagePath = "assets/background.jpg";
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         logoGroup = new javax.swing.ButtonGroup();
-        colorGroup = new javax.swing.ButtonGroup();
         settingsPanel = new javax.swing.JPanel();
         colorSettingsPanel = new javax.swing.JPanel();
         colorTitlePanel = new javax.swing.JPanel();
@@ -64,7 +66,6 @@ public class Display extends javax.swing.JFrame {
 
         colorPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        colorGroup.add(allColors);
         allColors.setText("Todo");
         allColors.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -73,15 +74,12 @@ public class Display extends javax.swing.JFrame {
         });
         colorPanel.add(allColors);
 
-        colorGroup.add(redButton);
         redButton.setText("Rojo");
         colorPanel.add(redButton);
 
-        colorGroup.add(greenButton);
         greenButton.setText("Verde");
         colorPanel.add(greenButton);
 
-        colorGroup.add(blueButton);
         blueButton.setText("Azul");
         colorPanel.add(blueButton);
 
@@ -167,7 +165,11 @@ public class Display extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void allColorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allColorsActionPerformed
-
+        if (allColors.isSelected()) {
+            redButton.setSelected(true);
+            greenButton.setSelected(true);
+            blueButton.setSelected(true);
+        }
     }//GEN-LAST:event_allColorsActionPerformed
 
     private void topLeftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topLeftButtonActionPerformed
@@ -229,7 +231,6 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JCheckBox blueButton;
     private javax.swing.JRadioButton bottomLeftButton;
     private javax.swing.JRadioButton bottomRightButton;
-    private javax.swing.ButtonGroup colorGroup;
     private javax.swing.JPanel colorPanel;
     private javax.swing.JPanel colorSettingsPanel;
     private javax.swing.JLabel colorTitle;
