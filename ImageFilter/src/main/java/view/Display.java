@@ -3,14 +3,12 @@ package view;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import java.awt.image.BufferedImage;
 import control.FileImageLoader;
+import control.UtilsPractica5;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractButton;
-import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -19,6 +17,9 @@ public class Display extends javax.swing.JFrame {
 
     private final String fishLogoPath = "assets/fishlogo.png";
     private final String backgroundImagePath = "assets/background.jpg";
+    private final int backgroundWidth = 640;
+    private final int iconWidth = 100;
+    private BufferedImage backgroundImage;
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -75,12 +76,27 @@ public class Display extends javax.swing.JFrame {
         colorPanel.add(allColors);
 
         redButton.setText("Rojo");
+        redButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                redButtonActionPerformed(evt);
+            }
+        });
         colorPanel.add(redButton);
 
         greenButton.setText("Verde");
+        greenButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                greenButtonActionPerformed(evt);
+            }
+        });
         colorPanel.add(greenButton);
 
         blueButton.setText("Azul");
+        blueButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blueButtonActionPerformed(evt);
+            }
+        });
         colorPanel.add(blueButton);
 
         colorSettingsPanel.add(colorPanel);
@@ -170,6 +186,8 @@ public class Display extends javax.swing.JFrame {
             greenButton.setSelected(true);
             blueButton.setSelected(true);
         }
+        imagePanel.setImage(imagePanel.getImage(), backgroundWidth, redButton.isSelected(), 
+                        greenButton.isSelected(), blueButton.isSelected());
     }//GEN-LAST:event_allColorsActionPerformed
 
     private void topLeftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topLeftButtonActionPerformed
@@ -188,6 +206,21 @@ public class Display extends javax.swing.JFrame {
         rePositionLogo(evt);
     }//GEN-LAST:event_bottomRightButtonActionPerformed
 
+    private void redButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redButtonActionPerformed
+        imagePanel.setImage(imagePanel.getImage(), backgroundWidth, redButton.isSelected(), 
+                        greenButton.isSelected(), blueButton.isSelected());
+    }//GEN-LAST:event_redButtonActionPerformed
+
+    private void greenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_greenButtonActionPerformed
+        imagePanel.setImage(imagePanel.getImage(), backgroundWidth, redButton.isSelected(), 
+                        greenButton.isSelected(), blueButton.isSelected());
+    }//GEN-LAST:event_greenButtonActionPerformed
+
+    private void blueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blueButtonActionPerformed
+        imagePanel.setImage(imagePanel.getImage(), backgroundWidth, redButton.isSelected(), 
+                        greenButton.isSelected(), blueButton.isSelected());
+    }//GEN-LAST:event_blueButtonActionPerformed
+
     private void rePositionLogo(ActionEvent evt) {
         int horizontalPos = 0;
         int verticalPos = 0;
@@ -197,7 +230,7 @@ public class Display extends javax.swing.JFrame {
         Dimension imagePanelSize = imagePanel.getSize();
         Dimension frameSize = getSize();
         
-        switch(buttonPressed) {
+        switch (buttonPressed) {
             case 0:
                 horizontalPos = imagePanelLocation.x;
                 verticalPos = imagePanelLocation.y;
@@ -274,22 +307,22 @@ public class Display extends javax.swing.JFrame {
 
     private void iconPanelSetUp() {
         BufferedImage iconImage = getImageFromPath(fishLogoPath);
-        iconPanel.setImage(iconImage);
+        iconPanel.setImage(iconImage, 100);
         layers.setLayer(iconPanel, 2);
         updatePanel();
     }
 
     private void imagePanelSetUp() {
-        BufferedImage backgroundImage = getImageFromPath(backgroundImagePath);
-        imagePanel.setImage(backgroundImage);
+        backgroundImage = getImageFromPath(backgroundImagePath);
+        imagePanel.setImage(backgroundImage, backgroundWidth, false, false, false);
         resizePanel(backgroundImage);
         layers.setLayer(imagePanel, 1);
         updatePanel();
     }
 
     private void resizePanel(BufferedImage image) {
-        int width = image.getWidth();
-        int height = image.getHeight();
+        int width = imagePanel.getWidth();
+        int height = imagePanel.getHeight() + settingsPanel.getHeight();
         setSize(width, height);
         setMaximumSize(getSize());
         setMinimumSize(getSize());

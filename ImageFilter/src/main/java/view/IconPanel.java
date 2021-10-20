@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 public class IconPanel extends JPanel {
 
     JLabel imageLabel;
+    int width, height;
 
     public IconPanel() {
         setOpaque(false);
@@ -15,11 +16,13 @@ public class IconPanel extends JPanel {
         add(imageLabel);
     }
 
-    public void setImage(BufferedImage image) {
+    public void setImage(BufferedImage image, int width) {
         clearPanel();
-        imageLabel = new JLabel(new ImageIcon(image));
+        this.width = width;
+        this.height = (width*image.getHeight())/image.getWidth();
+        imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(width, height, BufferedImage.SCALE_DEFAULT)));
         add(imageLabel);
-        resizePanel(image);
+        setSize(width, height);
         updatePanel();
     }
 
@@ -31,11 +34,4 @@ public class IconPanel extends JPanel {
         revalidate();
         repaint();
     }
-
-    private void resizePanel(BufferedImage image) {
-        int height = image.getHeight();
-        int width = image.getWidth();
-        setSize(width, height);
-    }
-
 }

@@ -92,6 +92,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Rojo"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="redButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="greenButton">
                   <Properties>
@@ -100,6 +103,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Verde"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="greenButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="blueButton">
                   <Properties>
@@ -108,6 +114,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Azul"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="blueButtonActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
