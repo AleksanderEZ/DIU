@@ -88,9 +88,6 @@
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="redButton">
                   <Properties>
-                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="default"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Rojo"/>
                   </Properties>
                   <Events>
@@ -99,9 +96,6 @@
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="greenButton">
                   <Properties>
-                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="default"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Verde"/>
                   </Properties>
                   <Events>
@@ -110,9 +104,6 @@
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="blueButton">
                   <Properties>
-                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="default"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Azul"/>
                   </Properties>
                   <Events>
