@@ -19,15 +19,16 @@ public class ImagePanel extends JPanel {
     public void setImage(BufferedImage image) {
         removeAll();
         this.image = image;
-        int width = image.getWidth();
-        int height = image.getHeight();
-        if (width < height && height > 768) {
-            height = 768;
-            width = (height*image.getWidth())/image.getHeight();
-        } else if (width > 1024) {
-            width = 1024;
-            height = (width*image.getHeight())/image.getWidth();
-        }
+        
+        int wi = image.getWidth();
+        int hi = image.getHeight();
+        int ws = 1024;
+        int hs = 768;
+        int ri = wi/hi;
+        int rs = ws/hs;
+        
+        int width = (rs >= ri) ? wi * hs/hi : ws;
+        int height = (rs >= ri) ? hs : hi * ws/wi;
         
         imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(width, height, BufferedImage.SCALE_DEFAULT)));
         add(imageLabel);

@@ -31,8 +31,11 @@ public class Display extends javax.swing.JFrame {
         about = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
+        setMinimumSize(new java.awt.Dimension(480, 320));
+        setResizable(false);
+        getContentPane().setLayout(null);
         getContentPane().add(imagePanel);
+        imagePanel.setBounds(0, 0, 506, 279);
 
         file.setText("Archivo");
 
@@ -98,7 +101,7 @@ public class Display extends javax.swing.JFrame {
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             BufferedImage loadedImage = loader.load(fileChooser.getSelectedFile());
             imagePanel.setImage(loadedImage);
-            setSize(imagePanel.getSize());
+            setSize(imagePanel.getWidth() + 16, imagePanel.getHeight() + 62);
         }
     }//GEN-LAST:event_openActionPerformed
 
@@ -107,6 +110,7 @@ public class Display extends javax.swing.JFrame {
     }//GEN-LAST:event_saveActionPerformed
 
     private void openSaveDialog() {
+        System.out.println(getWidth() + ", " + getHeight());
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             //do something
         }
