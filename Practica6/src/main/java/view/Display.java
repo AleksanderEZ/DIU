@@ -1,8 +1,12 @@
 package view;
 
+import control.ImageFileSaver;
 import com.formdev.flatlaf.FlatDarculaLaf;
+import control.DesktopFile;
+import control.Thresholder;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -110,8 +114,11 @@ public class Display extends javax.swing.JFrame {
     }//GEN-LAST:event_saveActionPerformed
 
     private void openSaveDialog() {
-        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            //do something
+        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            ImageFileSaver fileSaver = new ImageFileSaver(fileChooser.getSelectedFile(), imageDisplay.getCurrentImage());
+            fileSaver.save();
+        } else {
+            Logger.getLogger(Display.class.getName()).log(Level.INFO, "Guardar cancelado");
         }
     }
 
@@ -120,7 +127,7 @@ public class Display extends javax.swing.JFrame {
     }//GEN-LAST:event_exitActionPerformed
 
     private void openExitDialog() {
-        int promptResult = new ExitOptionPane().showOptionDialog();
+        int promptResult = new ExitOptionPane().showOptionDialog(this);
         if (promptResult == ExitOptionPane.YES_OPTION) {
             openSaveDialogAndExit();
         } else if (promptResult == ExitOptionPane.NO_OPTION) {
@@ -139,7 +146,15 @@ public class Display extends javax.swing.JFrame {
     }//GEN-LAST:event_thresholdActionPerformed
 
     private void applyThresholdToCurrentImage() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ThresholdDialog dialog = new ThresholdDialog();
+        Integer promptThreshold = dialog.showInputDialog(this);
+        if (promptThreshold != null) {
+            setImage(Thresholder.applyThreshold(imageDisplay.getCurrentImage(), promptThreshold));
+        }
+    }
+
+    private void setImage(BufferedImage applyThreshold) {
+        imageDisplay.setImage(applyThreshold);
     }
 
     private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
@@ -162,12 +177,13 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JMenuItem save;
     private javax.swing.JMenuItem threshold;
     // End of variables declaration//GEN-END:variables
-    private JFileChooser fileChooser;
-    
+    private final JFileChooser fileChooser = new JFileChooser(new DesktopFile());
+    private final ImageDisplay imageDisplay = new ImageDisplay();
+
     public void run() {
         setVisible(true);
     }
-    
+
     public Display() {
         setLookAndFeel();
         initComponents();
