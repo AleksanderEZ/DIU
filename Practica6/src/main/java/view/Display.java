@@ -4,6 +4,7 @@ import control.ImageFileSaver;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import control.DesktopFile;
 import control.Thresholder;
+import control.FileImageLoader;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -15,9 +16,13 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class Display extends javax.swing.JFrame {
+
+    private FileImageLoader loader = new FileImageLoader();
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        imagePanel = new view.ImagePanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         file = new javax.swing.JMenu();
         open = new javax.swing.JMenuItem();
@@ -29,6 +34,11 @@ public class Display extends javax.swing.JFrame {
         about = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(480, 320));
+        setResizable(false);
+        getContentPane().setLayout(null);
+        getContentPane().add(imagePanel);
+        imagePanel.setBounds(0, 0, 506, 279);
 
         file.setText("Archivo");
 
@@ -88,26 +98,15 @@ public class Display extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
-        );
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
     private void openActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openActionPerformed
-        openOpenDialog();
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            BufferedImage loadedImage = loader.load(fileChooser.getSelectedFile());
+            imagePanel.setImage(loadedImage);
+            setSize(imagePanel.getWidth() + 16, imagePanel.getHeight() + 62);
+        }
     }//GEN-LAST:event_openActionPerformed
-
-    private void openOpenDialog() {
-        // HINT fileChooser.showOpenDialog();
-    }
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         openSaveDialog();
@@ -172,6 +171,7 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JMenuItem exit;
     private javax.swing.JMenu file;
     private javax.swing.JMenu help;
+    private view.ImagePanel imagePanel;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem open;
     private javax.swing.JMenuItem save;

@@ -1,5 +1,6 @@
 view\Display$6.class
 view\AboutDialog.class
+control\FileImageLoader.class
 view\Display$1.class
 view\Display$5.class
 view\ImageDisplay.class
@@ -11,6 +12,7 @@ view\Display$2.class
 view\ExitOptionPane.class
 view\Display$3.class
 control\Thresholder.class
+view\ImagePanel.class
 view\Display$4.class
 control\DesktopFile.class
 Practica6\Practica6.class
