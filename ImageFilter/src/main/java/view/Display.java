@@ -185,7 +185,6 @@ public class Display extends javax.swing.JFrame {
         imagePanel.setImage(imagePanel.getImage(), backgroundWidth, redButton.isSelected(), 
                         greenButton.isSelected(), blueButton.isSelected());
         updatePanel();
-        System.out.println(getSize());
     }//GEN-LAST:event_allColorsActionPerformed
 
     private void topLeftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topLeftButtonActionPerformed
@@ -253,6 +252,7 @@ public class Display extends javax.swing.JFrame {
         initComponents();
         iconPanelSetUp();
         imagePanelSetUp();
+        setTitle("Filtro de imagen");
     }
 
     public void run() {
