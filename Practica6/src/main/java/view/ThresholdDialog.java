@@ -4,18 +4,12 @@ import javax.swing.JOptionPane;
 
 public class ThresholdDialog extends JOptionPane {
 
-    private final String title;
-    private final String text;
-    private final int textType;
     String[] optionsArray;
     String defaultOption;
 
     public ThresholdDialog() {
         this.optionsArray = new String[]{"Aceptar", "Cancelar"};
         this.defaultOption = optionsArray[0];
-        this.title = "Umbral";
-        this.textType = QUESTION_MESSAGE;
-        this.text = "Introduzca el umbral";
     }
 
     public Integer showInputDialog(Display frame) {

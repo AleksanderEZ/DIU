@@ -17,7 +17,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class Display extends javax.swing.JFrame {
 
-    private FileImageLoader loader = new FileImageLoader();
+    private final FileImageLoader loader = new FileImageLoader();
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -30,6 +30,8 @@ public class Display extends javax.swing.JFrame {
         exit = new javax.swing.JMenuItem();
         edit = new javax.swing.JMenu();
         threshold = new javax.swing.JMenuItem();
+        undo = new javax.swing.JMenuItem();
+        redo = new javax.swing.JMenuItem();
         help = new javax.swing.JMenu();
         about = new javax.swing.JMenuItem();
 
@@ -82,6 +84,24 @@ public class Display extends javax.swing.JFrame {
         });
         edit.add(threshold);
 
+        undo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        undo.setText("Deshacer");
+        undo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                undoActionPerformed(evt);
+            }
+        });
+        edit.add(undo);
+
+        redo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        redo.setText("Rehacer");
+        redo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                redoActionPerformed(evt);
+            }
+        });
+        edit.add(redo);
+
         jMenuBar1.add(edit);
 
         help.setText("Ayuda");
@@ -103,7 +123,7 @@ public class Display extends javax.swing.JFrame {
     private void openActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openActionPerformed
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             BufferedImage loadedImage = loader.load(fileChooser.getSelectedFile());
-            imagePanel.setImage(loadedImage);
+            setImage(loadedImage);
             setSize(imagePanel.getWidth() + 16, imagePanel.getHeight() + 62);
         }
     }//GEN-LAST:event_openActionPerformed
@@ -114,7 +134,7 @@ public class Display extends javax.swing.JFrame {
 
     private void openSaveDialog() {
         if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            ImageFileSaver fileSaver = new ImageFileSaver(fileChooser.getSelectedFile(), imageDisplay.getCurrentImage());
+            ImageFileSaver fileSaver = new ImageFileSaver(fileChooser.getSelectedFile(), imagePanel.getImage());
             fileSaver.save();
         } else {
             Logger.getLogger(Display.class.getName()).log(Level.INFO, "Guardar cancelado");
@@ -148,17 +168,25 @@ public class Display extends javax.swing.JFrame {
         ThresholdDialog dialog = new ThresholdDialog();
         Integer promptThreshold = dialog.showInputDialog(this);
         if (promptThreshold != null) {
-            setImage(Thresholder.applyThreshold(imageDisplay.getCurrentImage(), promptThreshold));
+            setImage(Thresholder.applyThreshold(imagePanel.getImage(), promptThreshold));
         }
     }
 
-    private void setImage(BufferedImage applyThreshold) {
-        imageDisplay.setImage(applyThreshold);
+    private void setImage(BufferedImage image) {
+        imagePanel.setImage(image);
     }
 
     private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
         openAboutDialog();
     }//GEN-LAST:event_aboutActionPerformed
+
+    private void redoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoActionPerformed
+        imagePanel.setNextImage();
+    }//GEN-LAST:event_redoActionPerformed
+
+    private void undoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoActionPerformed
+        imagePanel.setPreviousImage();
+    }//GEN-LAST:event_undoActionPerformed
 
     private void openAboutDialog() {
         AboutDialog aboutDialog = new AboutDialog();
@@ -174,11 +202,12 @@ public class Display extends javax.swing.JFrame {
     private view.ImagePanel imagePanel;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem open;
+    private javax.swing.JMenuItem redo;
     private javax.swing.JMenuItem save;
     private javax.swing.JMenuItem threshold;
+    private javax.swing.JMenuItem undo;
     // End of variables declaration//GEN-END:variables
     private final JFileChooser fileChooser = new JFileChooser(new DesktopFile());
-    private final ImageDisplay imageDisplay = new ImageDisplay();
 
     public void run() {
         setVisible(true);
@@ -190,6 +219,7 @@ public class Display extends javax.swing.JFrame {
         setTitle("Editor de imágenes");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         askBeforeClosingOperation();
+        loadThresholdingLibrary();
     }
 
     private void setLookAndFeel() {
@@ -207,5 +237,10 @@ public class Display extends javax.swing.JFrame {
                 openExitDialog();
             }
         });
+    }
+
+    private static void loadThresholdingLibrary() {
+        nu.pattern.OpenCV.loadShared();
+        System.loadLibrary(org.opencv.core.Core.NATIVE_LIBRARY_NAME);
     }
 }
