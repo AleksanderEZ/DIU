@@ -14,10 +14,12 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Display extends javax.swing.JFrame {
 
     private final FileImageLoader loader = new FileImageLoader();
+    private boolean saved = true;
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -106,6 +108,7 @@ public class Display extends javax.swing.JFrame {
 
         help.setText("Ayuda");
 
+        about.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         about.setText("Acerca de");
         about.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,6 +139,7 @@ public class Display extends javax.swing.JFrame {
         if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             ImageFileSaver fileSaver = new ImageFileSaver(fileChooser.getSelectedFile(), imagePanel.getImage());
             fileSaver.save();
+            saved = true;
         } else {
             Logger.getLogger(Display.class.getName()).log(Level.INFO, "Guardar cancelado");
         }
@@ -162,6 +166,7 @@ public class Display extends javax.swing.JFrame {
 
     private void thresholdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_thresholdActionPerformed
         applyThresholdToCurrentImage();
+        saved = false;
     }//GEN-LAST:event_thresholdActionPerformed
 
     private void applyThresholdToCurrentImage() {
@@ -189,8 +194,7 @@ public class Display extends javax.swing.JFrame {
     }//GEN-LAST:event_undoActionPerformed
 
     private void openAboutDialog() {
-        AboutDialog aboutDialog = new AboutDialog();
-        // do something
+        new AboutDialog(this);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -216,6 +220,7 @@ public class Display extends javax.swing.JFrame {
     public Display() {
         setLookAndFeel();
         initComponents();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Todas las imágenes", "jpg", "jpeg", "png", "gif", "bmp", "wbmp") );
         setTitle("Editor de imágenes");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         askBeforeClosingOperation();
@@ -234,13 +239,17 @@ public class Display extends javax.swing.JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
-                openExitDialog();
+                if (!saved) {
+                    openExitDialog();
+                } else {
+                    System.exit(0);
+                }
             }
         });
     }
 
-    private static void loadThresholdingLibrary() {
-        nu.pattern.OpenCV.loadShared();
+    private void loadThresholdingLibrary() {
+        nu.pattern.OpenCV.loadLocally();
         System.loadLibrary(org.opencv.core.Core.NATIVE_LIBRARY_NAME);
     }
 }
