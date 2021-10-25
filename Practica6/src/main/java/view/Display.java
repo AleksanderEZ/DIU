@@ -20,6 +20,7 @@ public class Display extends javax.swing.JFrame {
 
     private final FileImageLoader loader = new FileImageLoader();
     private boolean saved = true;
+    private BufferedImage loadedImage;
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -125,8 +126,8 @@ public class Display extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     private void openActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openActionPerformed
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            BufferedImage loadedImage = loader.load(fileChooser.getSelectedFile());
-            setImage(loadedImage);
+            loadedImage = loader.load(fileChooser.getSelectedFile());
+            imagePanel.setImage(loadedImage);
             setSize(imagePanel.getWidth() + 16, imagePanel.getHeight() + 62);
         }
     }//GEN-LAST:event_openActionPerformed
@@ -173,12 +174,8 @@ public class Display extends javax.swing.JFrame {
         ThresholdDialog dialog = new ThresholdDialog();
         Integer promptThreshold = dialog.showInputDialog(this);
         if (promptThreshold != null) {
-            setImage(Thresholder.applyThreshold(imagePanel.getImage(), promptThreshold));
+            imagePanel.setImage(Thresholder.applyThreshold(loadedImage, promptThreshold));
         }
-    }
-
-    private void setImage(BufferedImage image) {
-        imagePanel.setImage(image);
     }
 
     private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
