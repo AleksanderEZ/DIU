@@ -173,7 +173,7 @@ public class Display extends javax.swing.JFrame {
     private void applyThresholdToCurrentImage() {
         ThresholdDialog dialog = new ThresholdDialog();
         Integer promptThreshold = dialog.showInputDialog(this);
-        if (promptThreshold != null) {
+        if (promptThreshold != null && loadedImage != null) {
             imagePanel.setImage(Thresholder.applyThreshold(loadedImage, promptThreshold));
         }
     }
