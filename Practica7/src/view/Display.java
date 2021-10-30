@@ -41,7 +41,7 @@ public class Display extends javax.swing.JFrame {
         redComponent.setBackground(new java.awt.Color(255, 153, 153));
         redComponent.setColumns(41);
         redComponent.setFont(new java.awt.Font("Consolas", 1, 11)); // NOI18N
-        redComponent.setText("MAX:         MEDIA:         MIN:");
+        redComponent.setText("MAX: 000.00  MEDIA: 000.00  MIN: 000.00");
         redComponent.setToolTipText("Valor de rojo MAX;MEDIO;MIN");
         redComponent.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         redComponent.setEnabled(false);
@@ -50,7 +50,7 @@ public class Display extends javax.swing.JFrame {
         greenComponent.setBackground(new java.awt.Color(153, 255, 153));
         greenComponent.setColumns(41);
         greenComponent.setFont(new java.awt.Font("Consolas", 1, 11)); // NOI18N
-        greenComponent.setText("MAX:         MEDIA:         MIN:");
+        greenComponent.setText("MAX: 000.00  MEDIA: 000.00  MIN: 000.00");
         greenComponent.setToolTipText("Valor de verde MAX;MEDIO;MIN");
         greenComponent.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         greenComponent.setEnabled(false);
@@ -59,7 +59,7 @@ public class Display extends javax.swing.JFrame {
         blueComponent.setBackground(new java.awt.Color(153, 153, 255));
         blueComponent.setColumns(41);
         blueComponent.setFont(new java.awt.Font("Consolas", 1, 11)); // NOI18N
-        blueComponent.setText("MAX:         MEDIA:         MIN:");
+        blueComponent.setText("MAX: 000.00  MEDIA: 000.00  MIN: 000.00");
         blueComponent.setToolTipText("Valor de azul MAX;MEDIO;MIN");
         blueComponent.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         blueComponent.setEnabled(false);
@@ -107,6 +107,7 @@ public class Display extends javax.swing.JFrame {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(image);
         scrollPane.getViewport().setView(panel);
+        updateColorFields();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -121,7 +122,6 @@ public class Display extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     
     private final JFileChooser fileChooser = new JFileChooser();
-    private final String smileyPath = "assets/smiley.png";
     
     public Display() {
         setLookAndFeel();

@@ -56,7 +56,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Consolas" size="11" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="MAX:         MEDIA:         MIN:"/>
+            <Property name="text" type="java.lang.String" value="MAX: 000.00  MEDIA: 000.00  MIN: 000.00"/>
             <Property name="toolTipText" type="java.lang.String" value="Valor de rojo MAX;MEDIO;MIN"/>
             <Property name="disabledTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
@@ -73,7 +73,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Consolas" size="11" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="MAX:         MEDIA:         MIN:"/>
+            <Property name="text" type="java.lang.String" value="MAX: 000.00  MEDIA: 000.00  MIN: 000.00"/>
             <Property name="toolTipText" type="java.lang.String" value="Valor de verde MAX;MEDIO;MIN"/>
             <Property name="disabledTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
@@ -90,7 +90,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Consolas" size="11" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="MAX:         MEDIA:         MIN:"/>
+            <Property name="text" type="java.lang.String" value="MAX: 000.00  MEDIA: 000.00  MIN: 000.00"/>
             <Property name="toolTipText" type="java.lang.String" value="Valor de azul MAX;MEDIO;MIN"/>
             <Property name="disabledTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
