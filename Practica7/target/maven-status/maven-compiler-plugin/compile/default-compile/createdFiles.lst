@@ -1,0 +1,6 @@
+App\Main.class
+controller\EstadisticasImagen.class
+view\Display$1.class
+view\Display.class
+controller\FileImageLoader.class
+view\Display$2.class
