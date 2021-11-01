@@ -1,7 +1,9 @@
 package view;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
+import controller.EstadisticasImagen;
 import controller.FileImageLoader;
+import controller.UtilsPractica5;
 import java.awt.BorderLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
@@ -15,8 +17,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
 
 public class Display extends javax.swing.JFrame {
+    private final int unitIncrement = 16;
+    private final EstadisticasImagen stats = new EstadisticasImagen();
+    private String loadedImagePath;
+    private BufferedImage loadedImage;
+    private Mat matImage;
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -32,15 +42,16 @@ public class Display extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Image color analyzer");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMinimumSize(new java.awt.Dimension(800, 600));
+        setMinimumSize(new java.awt.Dimension(850, 300));
         setName("mainFrame"); // NOI18N
-        setResizable(false);
         setSize(new java.awt.Dimension(800, 600));
-        setType(java.awt.Window.Type.UTILITY);
+
+        upperPanel.setLayout(new javax.swing.BoxLayout(upperPanel, javax.swing.BoxLayout.LINE_AXIS));
 
         redComponent.setBackground(new java.awt.Color(255, 153, 153));
         redComponent.setColumns(41);
         redComponent.setFont(new java.awt.Font("Consolas", 1, 11)); // NOI18N
+        redComponent.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         redComponent.setText("MAX: 000.00  MEDIA: 000.00  MIN: 000.00");
         redComponent.setToolTipText("Valor de rojo MAX;MEDIO;MIN");
         redComponent.setDisabledTextColor(new java.awt.Color(0, 0, 0));
@@ -50,6 +61,7 @@ public class Display extends javax.swing.JFrame {
         greenComponent.setBackground(new java.awt.Color(153, 255, 153));
         greenComponent.setColumns(41);
         greenComponent.setFont(new java.awt.Font("Consolas", 1, 11)); // NOI18N
+        greenComponent.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         greenComponent.setText("MAX: 000.00  MEDIA: 000.00  MIN: 000.00");
         greenComponent.setToolTipText("Valor de verde MAX;MEDIO;MIN");
         greenComponent.setDisabledTextColor(new java.awt.Color(0, 0, 0));
@@ -59,6 +71,7 @@ public class Display extends javax.swing.JFrame {
         blueComponent.setBackground(new java.awt.Color(153, 153, 255));
         blueComponent.setColumns(41);
         blueComponent.setFont(new java.awt.Font("Consolas", 1, 11)); // NOI18N
+        blueComponent.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         blueComponent.setText("MAX: 000.00  MEDIA: 000.00  MIN: 000.00");
         blueComponent.setToolTipText("Valor de azul MAX;MEDIO;MIN");
         blueComponent.setDisabledTextColor(new java.awt.Color(0, 0, 0));
@@ -70,7 +83,9 @@ public class Display extends javax.swing.JFrame {
         openPanel.setPreferredSize(new java.awt.Dimension(32, 30));
         openPanel.setLayout(new java.awt.BorderLayout());
 
-        openButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/open.png"))); // NOI18N
+        javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/assets/open.png"));
+        icon.setImage(icon.getImage().getScaledInstance(30, 30, BufferedImage.SCALE_DEFAULT));
+        openButton.setIcon(icon);
         openButton.setBorderPainted(false);
         openButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
         openButton.setOpaque(false);
@@ -86,6 +101,9 @@ public class Display extends javax.swing.JFrame {
         getContentPane().add(upperPanel, java.awt.BorderLayout.NORTH);
 
         bottomPanel.setLayout(new java.awt.BorderLayout());
+
+        scrollPane.getVerticalScrollBar().setUnitIncrement(unitIncrement);
+        scrollPane.getHorizontalScrollBar().setUnitIncrement(unitIncrement);
         bottomPanel.add(scrollPane, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(bottomPanel, java.awt.BorderLayout.CENTER);
@@ -98,7 +116,10 @@ public class Display extends javax.swing.JFrame {
     private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonActionPerformed
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            displayImage(fileImageLoader.load(file));
+            loadedImagePath = file.getAbsolutePath();
+            loadedImage = fileImageLoader.load(file);
+            matImage = Imgcodecs.imread(loadedImagePath);
+            displayImage(loadedImage);
         }
     }//GEN-LAST:event_openButtonActionPerformed
     
@@ -120,6 +141,7 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JPanel upperPanel;
     // End of variables declaration//GEN-END:variables
+
     
     private final JFileChooser fileChooser = new JFileChooser();
     
@@ -148,11 +170,20 @@ public class Display extends javax.swing.JFrame {
     }
     
     private void scrollPaneListeners() {
-        scrollPane.getVerticalScrollBar().addAdjustmentListener(getAdjustmentListener());
-        scrollPane.getHorizontalScrollBar().addAdjustmentListener(getAdjustmentListener());
+        scrollPane.getVerticalScrollBar().addAdjustmentListener(getVerticalAdjustmentListener());
+        scrollPane.getHorizontalScrollBar().addAdjustmentListener(getHorizontalAdjustmentListener());
     }
     
-    private AdjustmentListener getAdjustmentListener() {
+    private AdjustmentListener getVerticalAdjustmentListener() {
+        return new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                updateColorFields();
+            }
+        };
+    }
+    
+    private AdjustmentListener getHorizontalAdjustmentListener() {
         return new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -162,6 +193,22 @@ public class Display extends javax.swing.JFrame {
     }
     
     private void updateColorFields() {
-        // LUCAS STUFF
+        stats.calculaEstadisticas(matImage, scrollPane.getViewport().getViewPosition(), scrollPane.getViewport().getExtentSize());
+        int[] max = stats.getMaximo();
+        int[] min = stats.getMinimo();
+        int[] mean = stats.getPromedio();
+        
+        redComponent.setText(
+                "MAX: " + max[stats.ROJO] + 
+                "  MEDIA: " + min[stats.ROJO] + 
+                "  MIN: " + mean[stats.ROJO]);
+        greenComponent.setText(
+                "MAX: " + max[stats.VERDE] + 
+                "  MEDIA: " + min[stats.VERDE] +
+                "  MIN: " + mean[stats.VERDE]);
+        blueComponent.setText(
+                "MAX: " + max[stats.AZUL] + 
+                "  MEDIA: " + min[stats.AZUL] + 
+                "  MIN: " + mean[stats.AZUL]);
     }
 }

@@ -1,6 +1,8 @@
-App\Main.class
 controller\EstadisticasImagen.class
 view\Display$1.class
+view\Display$3.class
+controller\UtilsPractica5.class
+app\Main.class
 view\Display.class
 controller\FileImageLoader.class
 view\Display$2.class
