@@ -25,7 +25,7 @@ public class Display extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imagePanel = new view.ImagePanel();
+        desktopPanel = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         file = new javax.swing.JMenu();
         open = new javax.swing.JMenuItem();
@@ -41,9 +41,21 @@ public class Display extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(480, 320));
         setResizable(false);
-        getContentPane().setLayout(null);
-        getContentPane().add(imagePanel);
-        imagePanel.setBounds(0, 0, 506, 279);
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
+
+        javax.swing.GroupLayout desktopPanelLayout = new javax.swing.GroupLayout(desktopPanel);
+        desktopPanel.setLayout(desktopPanelLayout);
+        desktopPanelLayout.setHorizontalGroup(
+            desktopPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 506, Short.MAX_VALUE)
+        );
+        desktopPanelLayout.setVerticalGroup(
+            desktopPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 279, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(desktopPanel);
+        desktopPanel.setVisible(true);
 
         file.setText("Archivo");
 
@@ -127,6 +139,9 @@ public class Display extends javax.swing.JFrame {
     private void openActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openActionPerformed
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             loadedImage = loader.load(fileChooser.getSelectedFile());
+            desktopPanel.removeAll();
+            ImagePanel imagePanel = new ImagePanel();
+            desktopPanel.add(imagePanel);
             imagePanel.setImage(loadedImage);
             setSize(imagePanel.getWidth() + 16, imagePanel.getHeight() + 62);
         }
@@ -138,7 +153,8 @@ public class Display extends javax.swing.JFrame {
 
     private void openSaveDialog() {
         if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            ImageFileSaver fileSaver = new ImageFileSaver(fileChooser.getSelectedFile(), imagePanel.getImage());
+            // **Should save latest threshold, not loaded image** //
+            ImageFileSaver fileSaver = new ImageFileSaver(fileChooser.getSelectedFile(), loadedImage);
             fileSaver.save();
             saved = true;
         } else {
@@ -174,6 +190,8 @@ public class Display extends javax.swing.JFrame {
         ThresholdDialog dialog = new ThresholdDialog();
         Integer promptThreshold = dialog.showInputDialog(this);
         if (promptThreshold != null && loadedImage != null) {
+            ImagePanel imagePanel = new ImagePanel();
+            desktopPanel.add(imagePanel);
             imagePanel.setImage(Thresholder.applyThreshold(loadedImage, promptThreshold));
         }
     }
@@ -183,11 +201,11 @@ public class Display extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutActionPerformed
 
     private void redoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoActionPerformed
-        imagePanel.setNextImage();
+        //imagePanel.setNextImage();
     }//GEN-LAST:event_redoActionPerformed
 
     private void undoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoActionPerformed
-        imagePanel.setPreviousImage();
+        //imagePanel.setPreviousImage();
     }//GEN-LAST:event_undoActionPerformed
 
     private void openAboutDialog() {
@@ -196,11 +214,11 @@ public class Display extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem about;
+    private javax.swing.JDesktopPane desktopPanel;
     private javax.swing.JMenu edit;
     private javax.swing.JMenuItem exit;
     private javax.swing.JMenu file;
     private javax.swing.JMenu help;
-    private view.ImagePanel imagePanel;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem open;
     private javax.swing.JMenuItem redo;

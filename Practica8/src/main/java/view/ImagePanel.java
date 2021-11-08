@@ -4,10 +4,10 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import java.util.Stack;
+import javax.swing.JInternalFrame;
 
-public class ImagePanel extends JPanel {
+public class ImagePanel extends JInternalFrame {
 
     JLabel imageLabel;
 
@@ -16,6 +16,11 @@ public class ImagePanel extends JPanel {
     BufferedImage currentImage;
 
     public ImagePanel() {
+        super("Document a",
+          true, //resizable
+          true, //closable
+          true, //maximizable
+          true);//iconifiable
         this.nextImages = new Stack<>();
         this.previousImages = new Stack<>();
         imageLabel = new JLabel();
