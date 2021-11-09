@@ -8,6 +8,7 @@ import control.FileImageLoader;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -21,6 +22,7 @@ public class Display extends javax.swing.JFrame {
     private final FileImageLoader loader = new FileImageLoader();
     private boolean saved = true;
     private BufferedImage loadedImage;
+    BufferedImage lastThresholdedImage;
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -33,8 +35,6 @@ public class Display extends javax.swing.JFrame {
         exit = new javax.swing.JMenuItem();
         edit = new javax.swing.JMenu();
         threshold = new javax.swing.JMenuItem();
-        undo = new javax.swing.JMenuItem();
-        redo = new javax.swing.JMenuItem();
         help = new javax.swing.JMenu();
         about = new javax.swing.JMenuItem();
 
@@ -99,24 +99,6 @@ public class Display extends javax.swing.JFrame {
         });
         edit.add(threshold);
 
-        undo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        undo.setText("Deshacer");
-        undo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                undoActionPerformed(evt);
-            }
-        });
-        edit.add(undo);
-
-        redo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        redo.setText("Rehacer");
-        redo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                redoActionPerformed(evt);
-            }
-        });
-        edit.add(redo);
-
         jMenuBar1.add(edit);
 
         help.setText("Ayuda");
@@ -138,12 +120,20 @@ public class Display extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     private void openActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openActionPerformed
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            loadedImage = loader.load(fileChooser.getSelectedFile());
+            File imageFile = fileChooser.getSelectedFile();
+            loadedImage = loader.load(imageFile);
             desktopPanel.removeAll();
-            ImagePanel imagePanel = new ImagePanel();
+            desktopPanel.repaint();
+            desktopPanel.revalidate();
+            ImagePanel.resetFrameCount();
+            ImagePanel imagePanel = new ImagePanel(imageFile.getName());
             desktopPanel.add(imagePanel);
             imagePanel.setImage(loadedImage);
             setSize(imagePanel.getWidth() + 16, imagePanel.getHeight() + 62);
+            saved = true;
+            try {
+                imagePanel.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {};
         }
     }//GEN-LAST:event_openActionPerformed
 
@@ -153,8 +143,7 @@ public class Display extends javax.swing.JFrame {
 
     private void openSaveDialog() {
         if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            // **Should save latest threshold, not loaded image** //
-            ImageFileSaver fileSaver = new ImageFileSaver(fileChooser.getSelectedFile(), loadedImage);
+            ImageFileSaver fileSaver = new ImageFileSaver(fileChooser.getSelectedFile(), lastThresholdedImage);
             fileSaver.save();
             saved = true;
         } else {
@@ -168,11 +157,16 @@ public class Display extends javax.swing.JFrame {
 
     private void openExitDialog() {
         int promptResult = new ExitOptionPane().showOptionDialog(this);
-        if (promptResult == ExitOptionPane.YES_OPTION) {
-            openSaveDialogAndExit();
-        } else if (promptResult == ExitOptionPane.NO_OPTION) {
-            System.exit(0);
-        } else if (promptResult == ExitOptionPane.CANCEL_OPTION) {
+        switch (promptResult) {
+            case ExitOptionPane.YES_OPTION:
+                openSaveDialogAndExit();
+                break;
+            case ExitOptionPane.NO_OPTION:
+                System.exit(0);
+            case ExitOptionPane.CANCEL_OPTION:
+                break;
+            default:
+                break;
         }
     }
 
@@ -181,18 +175,18 @@ public class Display extends javax.swing.JFrame {
         System.exit(0);
     }
 
-    private void thresholdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_thresholdActionPerformed
-        applyThresholdToCurrentImage();
-        saved = false;
-    }//GEN-LAST:event_thresholdActionPerformed
-
     private void applyThresholdToCurrentImage() {
         ThresholdDialog dialog = new ThresholdDialog();
         Integer promptThreshold = dialog.showInputDialog(this);
         if (promptThreshold != null && loadedImage != null) {
-            ImagePanel imagePanel = new ImagePanel();
+            ImagePanel imagePanel = new ImagePanel("Umbralizado de valor " + promptThreshold.toString());
             desktopPanel.add(imagePanel);
-            imagePanel.setImage(Thresholder.applyThreshold(loadedImage, promptThreshold));
+            
+            lastThresholdedImage = Thresholder.applyThreshold(loadedImage, promptThreshold);
+            imagePanel.setImage(lastThresholdedImage);
+            try {
+                imagePanel.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {};
         }
     }
 
@@ -200,13 +194,10 @@ public class Display extends javax.swing.JFrame {
         openAboutDialog();
     }//GEN-LAST:event_aboutActionPerformed
 
-    private void redoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoActionPerformed
-        //imagePanel.setNextImage();
-    }//GEN-LAST:event_redoActionPerformed
-
-    private void undoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoActionPerformed
-        //imagePanel.setPreviousImage();
-    }//GEN-LAST:event_undoActionPerformed
+    private void thresholdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_thresholdActionPerformed
+        applyThresholdToCurrentImage();
+        saved = false;
+    }//GEN-LAST:event_thresholdActionPerformed
 
     private void openAboutDialog() {
         new AboutDialog(this);
@@ -221,10 +212,8 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JMenu help;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem open;
-    private javax.swing.JMenuItem redo;
     private javax.swing.JMenuItem save;
     private javax.swing.JMenuItem threshold;
-    private javax.swing.JMenuItem undo;
     // End of variables declaration//GEN-END:variables
     private final JFileChooser fileChooser = new JFileChooser(new DesktopFile());
 
@@ -254,7 +243,7 @@ public class Display extends javax.swing.JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
-                if (!saved) {
+                if (!saved && desktopPanel.getAllFrames().length > 0) {
                     openExitDialog();
                 } else {
                     System.exit(0);
