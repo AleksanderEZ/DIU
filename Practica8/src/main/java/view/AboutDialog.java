@@ -29,6 +29,7 @@ public class AboutDialog extends JDialog {
         getContentPane().add(infoPanel, BorderLayout.CENTER);
         pack();
         setResizable(false);
+        setLocationRelativeTo(mainWindow);
         setVisible(true);
     }
 }
