@@ -122,7 +122,7 @@ public class Display extends javax.swing.JFrame {
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File imageFile = fileChooser.getSelectedFile();
             loadedImage = loader.load(imageFile);
-            //desktopPanel.removeAll();
+            desktopPanel.removeAll();
             desktopPanel.repaint();
             desktopPanel.revalidate();
             ImagePanel.resetFrameCount();
