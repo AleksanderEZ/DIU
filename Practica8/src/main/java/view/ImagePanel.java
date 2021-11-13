@@ -6,6 +6,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import java.util.Stack;
 import javax.swing.JInternalFrame;
+import javax.swing.event.InternalFrameListener;
+import javax.swing.event.InternalFrameEvent;
 
 public class ImagePanel extends JInternalFrame {
 
@@ -26,6 +28,32 @@ public class ImagePanel extends JInternalFrame {
         getContentPane().add(imageLabel);
         setVisible(true);
         openFrameCount++;
+        
+        addInternalFrameListener(new InternalFrameListener() {
+            public void internalFrameClosing(InternalFrameEvent e) {
+                openFrameCount--;
+                System.out.println("Closed window");
+                dispose();
+            }
+
+            public void internalFrameClosed(InternalFrameEvent e) {
+            }
+
+            public void internalFrameOpened(InternalFrameEvent e) {
+            }
+
+            public void internalFrameIconified(InternalFrameEvent e) {
+            }
+
+            public void internalFrameDeiconified(InternalFrameEvent e) {
+            }
+
+            public void internalFrameActivated(InternalFrameEvent e) {
+            }
+
+            public void internalFrameDeactivated(InternalFrameEvent e) {
+            }
+        });
     }
 
     public void setImage(BufferedImage image) {
