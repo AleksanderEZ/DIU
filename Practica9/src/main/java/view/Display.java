@@ -3,16 +3,19 @@ package view;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class Display extends javax.swing.JFrame {
 
+    private final JPanel databasePanel;
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        loginPanel = new view.LoginPanel();
+        loginPanel = new view.LoginPanel(this);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Explorador de bases de datos");
@@ -26,7 +29,14 @@ public class Display extends javax.swing.JFrame {
     public Display() {
         setLookAndFeel();
         initComponents();
+        databasePanel = new DatabasePanel();
         run();
+    }
+    
+    public void setDatabasePanel() {
+        setContentPane(databasePanel);
+        revalidate();
+        repaint();
     }
 
     public void run() {
