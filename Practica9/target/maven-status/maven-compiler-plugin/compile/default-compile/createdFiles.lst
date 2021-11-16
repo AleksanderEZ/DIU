@@ -1,9 +1,13 @@
 controller\DatabaseController.class
-view\LoginPanel$2.class
+view\DatabasePanel$3.class
 view\DatabasePanel$1.class
-view\DatabasePanel.class
-view\LoginPanel.class
 practica9\Main.class
 view\Display.class
-view\LoginPanel$1.class
 view\DatabasePanel$2.class
+view\DatabasePanel$6.class
+view\LoginPanel$2.class
+view\DatabasePanel$5.class
+view\DatabasePanel$4.class
+view\DatabasePanel.class
+view\LoginPanel.class
+view\LoginPanel$1.class

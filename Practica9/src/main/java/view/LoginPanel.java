@@ -33,7 +33,9 @@ public class LoginPanel extends javax.swing.JPanel {
         passwordLabel = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
         showPasswordButton = new javax.swing.JCheckBox();
+        connectPanel = new javax.swing.JPanel();
         connectButton = new javax.swing.JButton();
+        connectingLabel = new javax.swing.JLabel();
 
         java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
         layout.columnWidths = new int[] {1};
@@ -104,7 +106,13 @@ public class LoginPanel extends javax.swing.JPanel {
                 connectButtonActionPerformed(evt);
             }
         });
-        loginPanel.add(connectButton);
+        connectPanel.add(connectButton);
+
+        connectingLabel.setText("Conectando...");
+        connectPanel.add(connectingLabel);
+        connectingLabel.setVisible(false);
+
+        loginPanel.add(connectPanel);
 
         add(loginPanel, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
@@ -113,14 +121,17 @@ public class LoginPanel extends javax.swing.JPanel {
     private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
         // Conectar con la base de datos. 
         // Si conecta, cambiar este JPanel por el JPanel de mostrar datos, repaint, revalidate
+        connectingLabel.setVisible(true);
         if (    dbController.connect(serverField.getText(), 
                 databaseField.getText(), 
                 userField.getText(), 
                 String.valueOf(passwordField.getPassword()))) {
-            window.setDatabasePanel();
+            
+            window.setDatabasePanel(dbController);
         } else {
             System.out.println("Ocurrió un error al acceder a la base de datos");
         }
+        connectingLabel.setVisible(false);
     }//GEN-LAST:event_connectButtonActionPerformed
 
     private void showPasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPasswordButtonActionPerformed
@@ -130,6 +141,8 @@ public class LoginPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton connectButton;
+    private javax.swing.JPanel connectPanel;
+    private javax.swing.JLabel connectingLabel;
     private javax.swing.JTextField databaseField;
     private javax.swing.JLabel databaseLabel;
     private javax.swing.JPanel databasePanel;

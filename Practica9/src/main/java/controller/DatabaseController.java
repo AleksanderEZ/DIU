@@ -1,6 +1,7 @@
 package controller;
 
 import java.sql.*;
+import java.util.LinkedList;
 import java.util.logging.*;
 
 public class DatabaseController {
@@ -17,23 +18,42 @@ public class DatabaseController {
             "jdbc:mysql://" + server + "/" + database + "?useSSL=true",
             user,
             password);
-            DatabaseMetaData md = con.getMetaData();
-            String[] types = {"TABLE"};
-            ResultSet rs = md.getTables(null, null, "%", types);
-            while (rs.next()) {
-                String nombreTabla = rs.getString("TABLE_NAME");
-                System.out.println("Tabla: " + nombreTabla);
-                ResultSet rs2 = md.getColumns(null, null, nombreTabla, null);
-                while (rs2.next()) {
-                    String nombreCampo = rs2.getString("COLUMN_NAME");
-                    System.out.println(" Campo: " + nombreCampo);
-                }
-            }
             return true;
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DatabaseController.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+    }
+    
+    public LinkedList<String> getTables() {
+        LinkedList<String> tables = new LinkedList<>();
+        DatabaseMetaData metadata;
+        try {
+            metadata = con.getMetaData();
+            String[] types = {"TABLE"};
+            ResultSet resultSet = metadata.getTables(null, null, "%", types);
+            while (resultSet.next()) {
+                tables.add(resultSet.getString("TABLE_NAME"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tables;
+    }
+    
+    public LinkedList<String> getFields(String tableName) {
+        LinkedList<String> fields = new LinkedList<>();
+        DatabaseMetaData metadata;
+        try {
+            metadata = con.getMetaData();
+            ResultSet resultSet = metadata.getColumns(null, null, tableName, null);
+            while (resultSet.next()) {
+                fields.add(resultSet.getString("COLUMN_NAME"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return fields;
     }
     
     public boolean disconnect() {

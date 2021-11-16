@@ -34,14 +34,14 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JScrollPane" name="fieldsPanel">
+        <Container class="javax.swing.JScrollPane" name="tablesPanel">
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
           </AuxValues>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JList" name="fieldsList">
+            <Component class="javax.swing.JList" name="tablesList">
               <Properties>
                 <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                   <StringArray count="5">
@@ -59,14 +59,14 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JScrollPane" name="tablesPanel">
+        <Container class="javax.swing.JScrollPane" name="fieldsPanel">
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
           </AuxValues>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JList" name="tablesList">
+            <Component class="javax.swing.JList" name="fieldsList">
               <Properties>
                 <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                   <StringArray count="5">
@@ -103,9 +103,6 @@
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="selectionButtonsPanel">
-          <Properties>
-            <Property name="alignmentX" type="float" value="0.5"/>
-          </Properties>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
           <SubComponents>
@@ -116,10 +113,10 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Simple"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
-                <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="default"/>
-                </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="singleButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JToggleButton" name="singleIntervalButton">
               <Properties>
@@ -128,10 +125,10 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Por intervalo"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
-                <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="default"/>
-                </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="singleIntervalButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JToggleButton" name="multipleIntervalButton">
               <Properties>
@@ -140,10 +137,10 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="M&#xfa;ltiples intervalos"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
-                <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="default"/>
-                </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="multipleIntervalButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

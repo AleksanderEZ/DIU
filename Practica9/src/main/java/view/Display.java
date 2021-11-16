@@ -1,6 +1,7 @@
 package view;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
+import controller.DatabaseController;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
@@ -9,7 +10,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class Display extends javax.swing.JFrame {
 
-    private final JPanel databasePanel;
+    private JPanel databasePanel;
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -29,11 +30,12 @@ public class Display extends javax.swing.JFrame {
     public Display() {
         setLookAndFeel();
         initComponents();
-        databasePanel = new DatabasePanel();
+        
         run();
     }
     
-    public void setDatabasePanel() {
+    public void setDatabasePanel(DatabaseController databaseController) {
+        databasePanel = new DatabasePanel(databaseController);
         setContentPane(databasePanel);
         revalidate();
         repaint();
