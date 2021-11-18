@@ -1,6 +1,7 @@
 package view;
 
 import controller.DatabaseController;
+import javax.swing.SwingUtilities;
 
 public class LoginPanel extends javax.swing.JPanel {
 
@@ -36,6 +37,7 @@ public class LoginPanel extends javax.swing.JPanel {
         connectPanel = new javax.swing.JPanel();
         connectButton = new javax.swing.JButton();
         connectingLabel = new javax.swing.JLabel();
+        errorLabel = new javax.swing.JLabel();
 
         java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
         layout.columnWidths = new int[] {1};
@@ -49,47 +51,56 @@ public class LoginPanel extends javax.swing.JPanel {
         loginPanel.setAlignmentY(0.0F);
         loginPanel.setLayout(new javax.swing.BoxLayout(loginPanel, javax.swing.BoxLayout.PAGE_AXIS));
 
-        serverPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 15));
+        serverPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        serverLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         serverLabel.setText("Servidor");
         serverPanel.add(serverLabel);
 
         serverField.setColumns(30);
-        serverField.setText(" mozart.dis.ulpgc.es");
+        serverField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        serverField.setText("i7-lab5.dis.ulpgc.es");
         serverPanel.add(serverField);
 
         loginPanel.add(serverPanel);
 
-        databasePanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 15));
+        databasePanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        databaseLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         databaseLabel.setText("Base de datos");
         databasePanel.add(databaseLabel);
 
         databaseField.setColumns(30);
-        databaseField.setText(" DIU_BD");
+        databaseField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        databaseField.setText("DIU_BD");
         databasePanel.add(databaseField);
 
         loginPanel.add(databasePanel);
 
-        userPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 15));
+        userPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        userLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         userLabel.setText("Usuario: ");
         userPanel.add(userLabel);
 
         userField.setColumns(30);
+        userField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         userField.setText("estudiante-DIU");
         userPanel.add(userField);
 
         loginPanel.add(userPanel);
 
-        passwordPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 15));
+        passwordPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        passwordLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         passwordLabel.setText("Contraseña: ");
         passwordPanel.add(passwordLabel);
 
-        passwordField.setText("Clave prácticas");
+        passwordField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        passwordField.setText("Diu_2021_22");
         passwordPanel.add(passwordField);
 
+        showPasswordButton.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         showPasswordButton.setText("Mostrar");
         showPasswordButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,6 +111,7 @@ public class LoginPanel extends javax.swing.JPanel {
 
         loginPanel.add(passwordPanel);
 
+        connectButton.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         connectButton.setText("Conectar");
         connectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,9 +120,16 @@ public class LoginPanel extends javax.swing.JPanel {
         });
         connectPanel.add(connectButton);
 
+        connectingLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         connectingLabel.setText("Conectando...");
         connectPanel.add(connectingLabel);
         connectingLabel.setVisible(false);
+
+        errorLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        errorLabel.setForeground(new java.awt.Color(255, 50, 50));
+        errorLabel.setText("Ocurrió un error al conectar con la base de datos");
+        connectPanel.add(errorLabel);
+        errorLabel.setVisible(false);
 
         loginPanel.add(connectPanel);
 
@@ -122,16 +141,22 @@ public class LoginPanel extends javax.swing.JPanel {
         // Conectar con la base de datos. 
         // Si conecta, cambiar este JPanel por el JPanel de mostrar datos, repaint, revalidate
         connectingLabel.setVisible(true);
-        if (    dbController.connect(serverField.getText(), 
-                databaseField.getText(), 
-                userField.getText(), 
-                String.valueOf(passwordField.getPassword()))) {
-            
-            window.setDatabasePanel(dbController);
-        } else {
-            System.out.println("Ocurrió un error al acceder a la base de datos");
-        }
-        connectingLabel.setVisible(false);
+        errorLabel.setVisible(false);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if (  dbController.connect(serverField.getText(), 
+                    databaseField.getText(), 
+                    userField.getText(), 
+                    String.valueOf(passwordField.getPassword()))) {
+                    window.setDatabasePanel(dbController);
+                } else {
+                    errorLabel.setVisible(true);
+                    System.out.println("Ocurrió un error al acceder a la base de datos");
+                }
+                connectingLabel.setVisible(false);
+            }
+          });
+        
     }//GEN-LAST:event_connectButtonActionPerformed
 
     private void showPasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPasswordButtonActionPerformed
@@ -146,6 +171,7 @@ public class LoginPanel extends javax.swing.JPanel {
     private javax.swing.JTextField databaseField;
     private javax.swing.JLabel databaseLabel;
     private javax.swing.JPanel databasePanel;
+    private javax.swing.JLabel errorLabel;
     private javax.swing.JPanel loginPanel;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;

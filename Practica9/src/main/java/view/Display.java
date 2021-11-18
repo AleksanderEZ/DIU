@@ -35,8 +35,14 @@ public class Display extends javax.swing.JFrame {
     }
     
     public void setDatabasePanel(DatabaseController databaseController) {
-        databasePanel = new DatabasePanel(databaseController);
+        databasePanel = new DatabasePanel(this, databaseController);
         setContentPane(databasePanel);
+        revalidate();
+        repaint();
+    }
+    
+    public void setLoginPanel() {
+        setContentPane(loginPanel);
         revalidate();
         repaint();
     }

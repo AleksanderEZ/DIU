@@ -44,18 +44,24 @@
         <Container class="javax.swing.JPanel" name="serverPanel">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-            <Property name="verticalGap" type="int" value="15"/>
+            <Property name="alignment" type="int" value="0"/>
           </Layout>
           <SubComponents>
             <Component class="javax.swing.JLabel" name="serverLabel">
               <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="14" style="0"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Servidor"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="serverField">
               <Properties>
                 <Property name="columns" type="int" value="30"/>
-                <Property name="text" type="java.lang.String" value=" mozart.dis.ulpgc.es"/>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="14" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="i7-lab5.dis.ulpgc.es"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -63,18 +69,24 @@
         <Container class="javax.swing.JPanel" name="databasePanel">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-            <Property name="verticalGap" type="int" value="15"/>
+            <Property name="alignment" type="int" value="0"/>
           </Layout>
           <SubComponents>
             <Component class="javax.swing.JLabel" name="databaseLabel">
               <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="14" style="0"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Base de datos"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="databaseField">
               <Properties>
                 <Property name="columns" type="int" value="30"/>
-                <Property name="text" type="java.lang.String" value=" DIU_BD"/>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="14" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="DIU_BD"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -82,17 +94,23 @@
         <Container class="javax.swing.JPanel" name="userPanel">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-            <Property name="verticalGap" type="int" value="15"/>
+            <Property name="alignment" type="int" value="0"/>
           </Layout>
           <SubComponents>
             <Component class="javax.swing.JLabel" name="userLabel">
               <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="14" style="0"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Usuario: "/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="userField">
               <Properties>
                 <Property name="columns" type="int" value="30"/>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="14" style="0"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="estudiante-DIU"/>
               </Properties>
             </Component>
@@ -101,21 +119,30 @@
         <Container class="javax.swing.JPanel" name="passwordPanel">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-            <Property name="verticalGap" type="int" value="15"/>
+            <Property name="alignment" type="int" value="0"/>
           </Layout>
           <SubComponents>
             <Component class="javax.swing.JLabel" name="passwordLabel">
               <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="14" style="0"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Contrase&#xf1;a: "/>
               </Properties>
             </Component>
             <Component class="javax.swing.JPasswordField" name="passwordField">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Clave pr&#xe1;cticas"/>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="14" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Diu_2021_22"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JCheckBox" name="showPasswordButton">
               <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="14" style="0"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Mostrar"/>
               </Properties>
               <Events>
@@ -130,6 +157,9 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="connectButton">
               <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="14" style="0"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Conectar"/>
               </Properties>
               <Events>
@@ -138,10 +168,27 @@
             </Component>
             <Component class="javax.swing.JLabel" name="connectingLabel">
               <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="14" style="0"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Conectando..."/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="connectingLabel.setVisible(false);"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="errorLabel">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="14" style="0"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="32" green="32" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Ocurri&#xf3; un error al conectar con la base de datos"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="errorLabel.setVisible(false);"/>
               </AuxValues>
             </Component>
           </SubComponents>

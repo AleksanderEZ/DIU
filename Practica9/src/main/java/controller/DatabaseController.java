@@ -48,7 +48,7 @@ public class DatabaseController {
             metadata = con.getMetaData();
             ResultSet resultSet = metadata.getColumns(null, null, tableName, null);
             while (resultSet.next()) {
-                fields.add(resultSet.getString("COLUMN_NAME"));
+                fields.add(tableName + "." + resultSet.getString("COLUMN_NAME"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseController.class.getName()).log(Level.SEVERE, null, ex);
