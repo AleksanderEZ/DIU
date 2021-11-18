@@ -32,7 +32,7 @@ public class LoginPanel extends javax.swing.JPanel {
         userField = new javax.swing.JTextField();
         passwordPanel = new javax.swing.JPanel();
         passwordLabel = new javax.swing.JLabel();
-        passwordField = new javax.swing.JPasswordField();
+        passwordField = new javax.swing.JPasswordField(20);
         showPasswordButton = new javax.swing.JCheckBox();
         connectPanel = new javax.swing.JPanel();
         connectButton = new javax.swing.JButton();
@@ -86,6 +86,11 @@ public class LoginPanel extends javax.swing.JPanel {
         userField.setColumns(30);
         userField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         userField.setText("estudiante-DIU");
+        userField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userFieldActionPerformed(evt);
+            }
+        });
         userPanel.add(userField);
 
         loginPanel.add(userPanel);
@@ -162,6 +167,10 @@ public class LoginPanel extends javax.swing.JPanel {
     private void showPasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPasswordButtonActionPerformed
         passwordField.setEchoChar(showPasswordButton.isSelected() ? '\u0000' : echoChar);
     }//GEN-LAST:event_showPasswordButtonActionPerformed
+
+    private void userFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userFieldActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
