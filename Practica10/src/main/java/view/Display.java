@@ -2,6 +2,7 @@ package view;
 
 import java.io.File;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 
 public class Display extends javax.swing.JFrame {
@@ -60,6 +61,11 @@ public class Display extends javax.swing.JFrame {
 
         removeButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         removeButton.setText("←");
+        removeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeButtonActionPerformed(evt);
+            }
+        });
         chooserButtonsPanel.add(removeButton);
 
         zipSettingsPanel.add(chooserButtonsPanel);
@@ -77,6 +83,11 @@ public class Display extends javax.swing.JFrame {
 
         compressButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         compressButton.setText("¡Comprimir!");
+        compressButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                compressButtonActionPerformed(evt);
+            }
+        });
         compressButtonPanel.add(compressButton);
 
         getContentPane().add(compressButtonPanel);
@@ -95,6 +106,18 @@ public class Display extends javax.swing.JFrame {
          filesListPanel.revalidate();
          filesListPanel.repaint();
     }//GEN-LAST:event_addButtonActionPerformed
+
+    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
+        for (String file : filesList.getSelectedValuesList()) {
+            filesModel.removeElement(file);
+        }
+    }//GEN-LAST:event_removeButtonActionPerformed
+
+    private void compressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compressButtonActionPerformed
+        JFileChooser saveFileChooser = new JFileChooser();
+        saveFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        saveFileChooser.showOpenDialog(this);
+    }//GEN-LAST:event_compressButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
