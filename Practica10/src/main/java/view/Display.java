@@ -1,22 +1,14 @@
 package view;
 
+import control.Zipper;
 import java.io.File;
+import java.io.IOException;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class Display extends javax.swing.JFrame {
-
-    DefaultListModel<String> filesModel = new DefaultListModel<>();
-    
-    public Display() {
-        setLookAndFeel();
-        initComponents();
-    }
-    
-    public void run() {
-        setVisible(true);
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -96,27 +88,39 @@ public class Display extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-         File[] selectedFiles = fileChooser.getSelectedFiles();
-         for (File file : selectedFiles) {
-             String filename = file.getAbsolutePath();
-             if (!filesModel.contains(filename)) {
-                filesModel.addElement(filename); 
-             }
-         }
-         filesListPanel.revalidate();
-         filesListPanel.repaint();
+        File[] selectedFiles = fileChooser.getSelectedFiles();
+        for (File file : selectedFiles) {
+            String filename = file.getAbsolutePath();
+            if (!filesModel.contains(filename)) {
+                filesModel.addElement(filename);
+            }
+        }
+        filesListPanel.revalidate();
+        filesListPanel.repaint();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
-        for (String file : filesList.getSelectedValuesList()) {
+        filesList.getSelectedValuesList().forEach(file -> {
             filesModel.removeElement(file);
-        }
+        });
     }//GEN-LAST:event_removeButtonActionPerformed
 
     private void compressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compressButtonActionPerformed
-        JFileChooser saveFileChooser = new JFileChooser();
-        saveFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        saveFileChooser.showOpenDialog(this);
+        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            String selectedZipPath = "";
+            try {
+                selectedZipPath = saveFileChooser.getSelectedFile().getCanonicalPath();
+            } catch (IOException ex) {
+                System.out.println("Error in Display::compressButtonActionPerformed - " + ex.getMessage());
+            }
+            if (selectedZipPath.length() > 0) {
+                Zipper zipper = new Zipper(BUFFER_SIZE);
+                for (String file : getChosenFiles()) {
+                    zipper.addFileToCompressionGroup(file);
+                }
+                zipper.zipFiles(selectedZipPath);
+            }
+        }
     }//GEN-LAST:event_compressButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -132,13 +136,30 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JPanel zipSettingsPanel;
     // End of variables declaration//GEN-END:variables
 
+    DefaultListModel<String> filesModel = new DefaultListModel<>();
+    JFileChooser saveFileChooser = new JFileChooser();
+    private final int BUFFER_SIZE = 1000;
+
+    public Display() {
+        setLookAndFeel();
+        initComponents();
+        saveFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+    }
+
+    public void run() {
+        setVisible(true);
+    }
+
     private void setLookAndFeel() {
         try {
             UIManager.setLookAndFeel(
-                UIManager.getSystemLookAndFeelClassName());
-        } 
-        catch (Exception e) {
-           // handle exception
+                    UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
+            System.out.println("Error in Display::setLookAndFeel - " + e.getMessage());
         }
+    }
+
+    private Iterable<String> getChosenFiles() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
