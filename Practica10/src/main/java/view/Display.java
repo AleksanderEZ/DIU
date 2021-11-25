@@ -4,13 +4,13 @@ import control.Zipper;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Display extends javax.swing.JFrame {
 
@@ -80,7 +80,7 @@ public class Display extends javax.swing.JFrame {
         compressButtonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
         compressButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        compressButton.setText("¡Comprimir!");
+        compressButton.setText("Comprimir");
         compressButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 compressButtonActionPerformed(evt);
@@ -151,6 +151,7 @@ public class Display extends javax.swing.JFrame {
         setLookAndFeel();
         initComponents();
         saveFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        saveFileChooser.setFileFilter(new FileNameExtensionFilter("Archivo comprimido (.zip)", "zip") );
     }
 
     public void run() {
