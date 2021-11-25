@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
@@ -92,7 +94,12 @@ public class Display extends javax.swing.JFrame {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         File[] selectedFiles = fileChooser.getSelectedFiles();
         for (File file : selectedFiles) {
-            String filename = file.getAbsolutePath();
+            String filename = "";
+            try {
+                filename = file.getCanonicalPath();
+            } catch (IOException ex) {
+                Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+            }
             if (!filesModel.contains(filename)) {
                 filesModel.addElement(filename);
             }
@@ -108,19 +115,19 @@ public class Display extends javax.swing.JFrame {
     }//GEN-LAST:event_removeButtonActionPerformed
 
     private void compressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compressButtonActionPerformed
-        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            String selectedZipPath = "";
-            try {
-                selectedZipPath = saveFileChooser.getSelectedFile().getCanonicalPath();
-            } catch (IOException ex) {
-                System.out.println("Error in Display::compressButtonActionPerformed - " + ex.getMessage());
-            }
-            if (selectedZipPath.length() > 0) {
+        
+        
+        if (saveFileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            if (filesModel.getSize() > 0) {
                 Zipper zipper = new Zipper(BUFFER_SIZE);
-                for (String file : getChosenFiles()) {
-                    zipper.addFileToCompressionGroup(file);
+                for (int i = 0; i < filesModel.getSize(); i++) {
+                    zipper.addFileToCompressionGroup(filesModel.getElementAt(i));
                 }
-                zipper.zipFiles(selectedZipPath);
+                try {
+                    zipper.zipFiles(saveFileChooser.getSelectedFile().getCanonicalPath());
+                } catch (IOException ex) {
+                    Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }//GEN-LAST:event_compressButtonActionPerformed

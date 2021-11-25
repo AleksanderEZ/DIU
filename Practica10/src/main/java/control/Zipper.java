@@ -19,6 +19,7 @@ public class Zipper {
     }
 
     public void zipFiles(String destination) {
+        System.out.println(files);
         try {
             BufferedInputStream origin;
             FileOutputStream dest = new FileOutputStream(destination);
