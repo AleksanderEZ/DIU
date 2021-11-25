@@ -5,6 +5,7 @@
  */
 package view;
 
+import java.awt.BorderLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
@@ -23,6 +24,10 @@ public class ProgressDialog extends JDialog{
         progressBar.setValue(0);
         progressBar.setString("Por favor espere...");
         progressBar.setStringPainted(true);
+        setLayout(new BorderLayout());
+        add(progressBar);
+        revalidate();
+        repaint();
     }
 
     public JProgressBar getProgressBar() {
