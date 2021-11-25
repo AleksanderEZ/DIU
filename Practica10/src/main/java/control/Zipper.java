@@ -13,8 +13,9 @@ import view.ProgressDialog;
 
 public class Zipper {
 
-    private List<String> files = new ArrayList<>();
     private JProgressBar progressBar;
+    private List<String> files = new ArrayList<>();
+    private List<String> names = new ArrayList<>();
     private final int BUFFER_SIZE;
     private int iterations;
 
@@ -38,8 +39,10 @@ public class Zipper {
             FileOutputStream dest = new FileOutputStream(destination);
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
             byte[] data = new byte[BUFFER_SIZE];
-            for (String filename : files) {
-                FileInputStream fi = new FileInputStream(filename);
+            for (int i = 0; i < files.size(); i++) {
+                String filepath = files.get(i);
+                String filename = names.get(i);
+                FileInputStream fi = new FileInputStream(filepath);
                 origin = new BufferedInputStream(fi, BUFFER_SIZE);
                 ZipEntry entry = new ZipEntry(filename);
                 out.putNextEntry(entry);
@@ -57,8 +60,9 @@ public class Zipper {
         }
     }
 
-    public void addFileToCompressionGroup(String filePath) {
+    public void addFileToCompressionGroup(String filePath, String fileName) {
         files.add(filePath);
+        names.add(fileName);
     }
 
     private void fillProgressBar() {

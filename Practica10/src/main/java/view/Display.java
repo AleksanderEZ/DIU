@@ -3,15 +3,19 @@ package view;
 import control.Zipper;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Display extends javax.swing.JFrame {
 
+    ArrayList<String> nameList = new ArrayList<>();
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -76,7 +80,7 @@ public class Display extends javax.swing.JFrame {
         compressButtonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
         compressButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        compressButton.setText("¡Comprimir!");
+        compressButton.setText("Comprimir");
         compressButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 compressButtonActionPerformed(evt);
@@ -95,6 +99,7 @@ public class Display extends javax.swing.JFrame {
             String filename = file.getAbsolutePath();
             if (!filesModel.contains(filename)) {
                 filesModel.addElement(filename);
+                nameList.add(file.getName());
             }
         }
         filesListPanel.revalidate();
@@ -114,7 +119,7 @@ public class Display extends javax.swing.JFrame {
             if (filesModel.getSize() > 0) {
                 Zipper zipper = new Zipper(BUFFER_SIZE, progressDialog);
                 for (int i = 0; i < filesModel.getSize(); i++) {
-                    zipper.addFileToCompressionGroup(filesModel.getElementAt(i));
+                    zipper.addFileToCompressionGroup(filesModel.getElementAt(i), nameList.get(i));
                 }
                 try {
                     progressDialog.setVisible(true);
@@ -152,6 +157,7 @@ public class Display extends javax.swing.JFrame {
         saveFileChooser = new JFileChooser();
         progressDialog = new ProgressDialog(this);
         saveFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        saveFileChooser.setFileFilter(new FileNameExtensionFilter("Archivo comprimido (.zip)", "zip") );
     }
 
     public void run() {
