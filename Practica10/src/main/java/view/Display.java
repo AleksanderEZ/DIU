@@ -3,6 +3,8 @@ package view;
 import control.Zipper;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
@@ -159,7 +161,11 @@ public class Display extends javax.swing.JFrame {
         }
     }
 
-    private Iterable<String> getChosenFiles() {
-        return filesModel.elements();
+    private List<String> getChosenFiles() {
+        ArrayList<String> chosenFiles = new ArrayList<>();
+        for (int i = 0; i < filesModel.getSize(); i++) {
+            chosenFiles.add(filesModel.getElementAt(i));
+        }
+        return chosenFiles;
     }
 }
