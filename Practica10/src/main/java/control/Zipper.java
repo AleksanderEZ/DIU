@@ -8,18 +8,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.zip.*;
 import java.util.List;
+import javax.swing.JProgressBar;
+import view.ProgressDialog;
 
 public class Zipper {
 
-    List<String> files = new ArrayList<>();
+    private List<String> files = new ArrayList<>();
+    private JProgressBar progressBar;
     private final int BUFFER_SIZE;
+    private int iterations;
 
     public Zipper(int bufferSize) {
         BUFFER_SIZE = bufferSize;
     }
+    
+    public Zipper(int bufferSize, ProgressDialog progressDialog) {
+        BUFFER_SIZE = bufferSize;
+        this.progressBar = progressDialog.getProgressBar();
+        iterations = 0;
+    }
 
     public void zipFiles(String destination) {
         System.out.println(files);
+        if(!destination.endsWith(".zip")){
+            destination += ".zip";
+        }
         try {
             BufferedInputStream origin;
             FileOutputStream dest = new FileOutputStream(destination);
@@ -35,6 +48,8 @@ public class Zipper {
                     out.write(data, 0, count);
                 }
                 origin.close();
+                
+                fillProgressBar();
             }
             out.close();
         } catch (IOException e) {
@@ -44,5 +59,11 @@ public class Zipper {
 
     public void addFileToCompressionGroup(String filePath) {
         files.add(filePath);
+    }
+
+    private void fillProgressBar() {
+        iterations++;
+        int progressBarValue = (int) iterations/files.size() * 100;
+        progressBar.setValue(progressBarValue);
     }
 }

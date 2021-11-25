@@ -3,8 +3,6 @@ package view;
 import control.Zipper;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -114,12 +112,14 @@ public class Display extends javax.swing.JFrame {
         
         if (saveFileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             if (filesModel.getSize() > 0) {
-                Zipper zipper = new Zipper(BUFFER_SIZE);
+                Zipper zipper = new Zipper(BUFFER_SIZE, progressDialog);
                 for (int i = 0; i < filesModel.getSize(); i++) {
                     zipper.addFileToCompressionGroup(filesModel.getElementAt(i));
                 }
                 try {
+                    progressDialog.setVisible(true);
                     zipper.zipFiles(saveFileChooser.getSelectedFile().getCanonicalPath());
+                    progressDialog.setVisible(false);
                 } catch (IOException ex) {
                     Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -140,13 +140,17 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JPanel zipSettingsPanel;
     // End of variables declaration//GEN-END:variables
 
-    DefaultListModel<String> filesModel = new DefaultListModel<>();
-    JFileChooser saveFileChooser = new JFileChooser();
+    DefaultListModel<String> filesModel = new DefaultListModel<>();;
+    JFileChooser saveFileChooser;
+    ProgressDialog progressDialog;
+    
     private final int BUFFER_SIZE = 1000;
 
     public Display() {
         setLookAndFeel();
         initComponents();
+        saveFileChooser = new JFileChooser();
+        progressDialog = new ProgressDialog(this);
         saveFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
     }
 
