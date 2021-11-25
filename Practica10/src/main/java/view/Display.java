@@ -94,12 +94,7 @@ public class Display extends javax.swing.JFrame {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         File[] selectedFiles = fileChooser.getSelectedFiles();
         for (File file : selectedFiles) {
-            String filename = "";
-            try {
-                filename = file.getCanonicalPath();
-            } catch (IOException ex) {
-                Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            String filename = file.getAbsolutePath();
             if (!filesModel.contains(filename)) {
                 filesModel.addElement(filename);
             }
@@ -166,13 +161,5 @@ public class Display extends javax.swing.JFrame {
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
             System.out.println("Error in Display::setLookAndFeel - " + e.getMessage());
         }
-    }
-
-    private List<String> getChosenFiles() {
-        ArrayList<String> chosenFiles = new ArrayList<>();
-        for (int i = 0; i < filesModel.getSize(); i++) {
-            chosenFiles.add(filesModel.getElementAt(i));
-        }
-        return chosenFiles;
     }
 }
