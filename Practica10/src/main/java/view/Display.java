@@ -160,6 +160,6 @@ public class Display extends javax.swing.JFrame {
     }
 
     private Iterable<String> getChosenFiles() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return filesModel.elements();
     }
 }
