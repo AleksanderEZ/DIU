@@ -15,6 +15,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Display extends javax.swing.JFrame {
 
     ArrayList<String> nameList = new ArrayList<>();
+    Zipper zipper;
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -114,17 +115,16 @@ public class Display extends javax.swing.JFrame {
 
     private void compressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compressButtonActionPerformed
         
-        
-        if (saveFileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            if (filesModel.getSize() > 0) {
-                Zipper zipper = new Zipper(BUFFER_SIZE, progressDialog);
+        if (filesModel.getSize() > 0) {
+            if (saveFileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                zipper = new Zipper(BUFFER_SIZE, progressDialog);
                 for (int i = 0; i < filesModel.getSize(); i++) {
                     zipper.addFileToCompressionGroup(filesModel.getElementAt(i), nameList.get(i));
                 }
                 try {
                     progressDialog.setVisible(true);
                     zipper.zipFiles(saveFileChooser.getSelectedFile().getCanonicalPath());
-                    progressDialog.setVisible(false);
+                    zipper.execute();
                 } catch (IOException ex) {
                     Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -132,6 +132,10 @@ public class Display extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_compressButtonActionPerformed
 
+    public void cancelOperation() {
+        zipper.cancel(true);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JPanel chooserButtonsPanel;

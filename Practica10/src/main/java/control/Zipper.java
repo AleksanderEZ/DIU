@@ -2,35 +2,67 @@ package control;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.zip.*;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JProgressBar;
+import javax.swing.SwingWorker;
 import view.ProgressDialog;
 
-public class Zipper {
+public class Zipper extends SwingWorker<Void, Integer> {
 
     private JProgressBar progressBar;
+    private ProgressDialog progressDialog;
     private List<String> files = new ArrayList<>();
     private List<String> names = new ArrayList<>();
     private final int BUFFER_SIZE;
     private int iterations;
-
+    
+    private String destination;
+    
     public Zipper(int bufferSize) {
         BUFFER_SIZE = bufferSize;
     }
     
     public Zipper(int bufferSize, ProgressDialog progressDialog) {
         BUFFER_SIZE = bufferSize;
+        this.progressDialog = progressDialog;
         this.progressBar = progressDialog.getProgressBar();
+        this.progressBar.setMaximum(files.size());
         iterations = 0;
     }
 
     public void zipFiles(String destination) {
-        System.out.println(files);
+        this.destination = destination;
+        progressBar.setMaximum(files.size());
+    }
+
+    public void addFileToCompressionGroup(String filePath, String fileName) {
+        files.add(filePath);
+        names.add(fileName);
+    }
+
+    private void fillProgressBar() {
+        iterations++;
+        int progressBarValue = (int) iterations/files.size() * 100;
+        progressBar.setValue(progressBarValue);
+    }
+
+    @Override
+    protected void process(List<Integer> chunks) {
+        int i = chunks.get(chunks.size()-1);
+        System.out.println(i+1+" sobre "+files.size());
+        progressBar.setValue(i);
+    }
+    
+    @Override
+    protected Void doInBackground() throws Exception {
         if(!destination.endsWith(".zip")){
             destination += ".zip";
         }
@@ -52,22 +84,25 @@ public class Zipper {
                 }
                 origin.close();
                 
-                fillProgressBar();
+                publish(i);
+                if (Thread.interrupted()) throw new InterruptedException();
             }
             out.close();
         } catch (IOException e) {
             System.out.println("Error in Zipper::zipFiles - " + e.getMessage());
+        } catch (InterruptedException e) {
+            return null;
         }
+        return null;
     }
-
-    public void addFileToCompressionGroup(String filePath, String fileName) {
-        files.add(filePath);
-        names.add(fileName);
-    }
-
-    private void fillProgressBar() {
-        iterations++;
-        int progressBarValue = (int) iterations/files.size() * 100;
-        progressBar.setValue(progressBarValue);
+    
+    @Override
+    protected void done() {
+        progressDialog.setVisible(false);
+        files.clear();
+        if (isCancelled()) {
+            File zipFile = new File(destination);
+            zipFile.delete();
+        }
     }
 }
