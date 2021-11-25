@@ -12,6 +12,7 @@ import java.util.List;
 public class Zipper {
 
     List<String> files = new ArrayList<>();
+    List<String> names = new ArrayList<>();
     private final int BUFFER_SIZE;
 
     public Zipper(int bufferSize) {
@@ -19,14 +20,15 @@ public class Zipper {
     }
 
     public void zipFiles(String destination) {
-        System.out.println(files);
         try {
             BufferedInputStream origin;
             FileOutputStream dest = new FileOutputStream(destination);
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
             byte[] data = new byte[BUFFER_SIZE];
-            for (String filename : files) {
-                FileInputStream fi = new FileInputStream(filename);
+            for (int i = 0; i < files.size(); i++) {
+                String filepath = files.get(i);
+                String filename = names.get(i);
+                FileInputStream fi = new FileInputStream(filepath);
                 origin = new BufferedInputStream(fi, BUFFER_SIZE);
                 ZipEntry entry = new ZipEntry(filename);
                 out.putNextEntry(entry);
@@ -42,7 +44,8 @@ public class Zipper {
         }
     }
 
-    public void addFileToCompressionGroup(String filePath) {
+    public void addFileToCompressionGroup(String filePath, String fileName) {
         files.add(filePath);
+        names.add(fileName);
     }
 }

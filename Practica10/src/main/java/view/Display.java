@@ -14,6 +14,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class Display extends javax.swing.JFrame {
 
+    ArrayList<String> nameList = new ArrayList<>();
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -97,6 +99,7 @@ public class Display extends javax.swing.JFrame {
             String filename = file.getAbsolutePath();
             if (!filesModel.contains(filename)) {
                 filesModel.addElement(filename);
+                nameList.add(file.getName());
             }
         }
         filesListPanel.revalidate();
@@ -116,7 +119,7 @@ public class Display extends javax.swing.JFrame {
             if (filesModel.getSize() > 0) {
                 Zipper zipper = new Zipper(BUFFER_SIZE);
                 for (int i = 0; i < filesModel.getSize(); i++) {
-                    zipper.addFileToCompressionGroup(filesModel.getElementAt(i));
+                    zipper.addFileToCompressionGroup(filesModel.getElementAt(i), nameList.get(i));
                 }
                 try {
                     zipper.zipFiles(saveFileChooser.getSelectedFile().getCanonicalPath());
