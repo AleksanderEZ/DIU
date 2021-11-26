@@ -22,7 +22,6 @@ public class Zipper extends SwingWorker<Void, Integer> {
     private List<String> files = new ArrayList<>();
     private List<String> names = new ArrayList<>();
     private final int BUFFER_SIZE;
-    private int iterations;
     
     private String destination;
     
@@ -35,7 +34,6 @@ public class Zipper extends SwingWorker<Void, Integer> {
         this.progressDialog = progressDialog;
         this.progressBar = progressDialog.getProgressBar();
         this.progressBar.setMaximum(files.size());
-        iterations = 0;
     }
 
     public void zipFiles(String destination) {
@@ -46,12 +44,6 @@ public class Zipper extends SwingWorker<Void, Integer> {
     public void addFileToCompressionGroup(String filePath, String fileName) {
         files.add(filePath);
         names.add(fileName);
-    }
-
-    private void fillProgressBar() {
-        iterations++;
-        int progressBarValue = (int) iterations/files.size() * 100;
-        progressBar.setValue(progressBarValue);
     }
 
     @Override
